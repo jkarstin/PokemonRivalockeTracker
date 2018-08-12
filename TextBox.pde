@@ -11,18 +11,21 @@ public class TextBox extends Tile {
   public TextBox() {
     super();
     mText = "";
+    mFillColor = color(255);
     mTextColor = color(0);
   }
   
   public TextBox(Coord position, Coord size) {
     super(position, size);
     mText = "";
+    mFillColor = color(255);
     mTextColor = color(0);
   }
   
   public TextBox(Coord position, Coord size, String text) {
     super(position, size);
     mText = text;
+    mFillColor = color(255);
     mTextColor = color(0);
   }
   

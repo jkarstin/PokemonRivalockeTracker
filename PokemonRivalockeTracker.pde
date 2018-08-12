@@ -94,7 +94,7 @@ public void keyPressed() {
 public void draw() {
   //Fill the whole screen with the color black, drawing over anything that happened in the previous frame
   //Essentially a fresh slate for the next frame's drawing actions
-  background(0);
+  background(127);
   //Show the contents of the current Page
   currentPage.show();
 }
