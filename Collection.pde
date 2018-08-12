@@ -41,9 +41,10 @@ public class Collection<E extends Tile> {
   }
   
   public void addElement(E element) {
-    if (mMax > 0 && mSpace <= mMax) {
+    if (mCount == mMax) return;
+    if (mMax <= 0 || mSpace <= mMax) {
       if (mCount >= mSpace) grow();
-      if (mCount < mSpace) mElements[mCount++] = element;
+      mElements[mCount++] = element;
     }
   }
   
