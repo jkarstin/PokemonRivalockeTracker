@@ -14,6 +14,11 @@ public class Coord {
     mY = 0;
   }
   
+  public Coord(Coord other) {
+    mX = other.x();
+    mY = other.y();
+  }
+  
   public Coord(float x, float y) {
     mX = x;
     mY = y;
@@ -57,6 +62,10 @@ public class Coord {
   
   public Coord times(float mult) {
     return new Coord(this.mX*mult, this.mY*mult);
+  }
+  
+  public Coord getCopy() {
+    return new Coord(mX, mY);
   }
   
   public void cap(Coord TL, Coord BR) {

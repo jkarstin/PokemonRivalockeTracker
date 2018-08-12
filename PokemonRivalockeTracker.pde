@@ -65,16 +65,16 @@ public void setup() {
   //Intialize TextBox variables
   tb = new TextBox(new Coord(40, 40), new Coord(160, 100), battle1.summary());
   tb.setTextColor(color(255));
-  tb.setFillColor(color(0));
-  tb.setBorderColor(color(255));
+  tb.setFillColor(color(255, 0, 255));
+  tb.setBorderColor(color(127));
   tb2 = new TextBox(new Coord(300, 40), new Coord(160, 100), battle3.summary());
   
   //Initialize Page variables
   mainPage = new Page();
-  mainPage.addTextBox(tb);
+  mainPage.addTile(tb);
   secondPage = new Page();
-  secondPage.addTextBox(tb);
-  secondPage.addTextBox(tb2);
+  secondPage.addTile(tb);
+  secondPage.addTile(tb2);
   
   //Set starting value of currentPage
   currentPage = mainPage;
