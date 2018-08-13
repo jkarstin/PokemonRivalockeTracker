@@ -9,11 +9,17 @@ public class Page extends Tile {
   
   private Tile[] mTiles;
   private int mTileCount;
+  private String mName;
   
-  public Page() {
+  public Page(String name) {
     super(0, 0, width-1, height-1);
     mTiles = new Tile[MAXTILES];
     mTileCount = 0;
+    mName = name;
+  }
+  
+  public String name() {
+    return mName;
   }
   
   public void addTile(Tile tile) {

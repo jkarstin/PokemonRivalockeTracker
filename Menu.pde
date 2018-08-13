@@ -21,6 +21,7 @@ public class Menu extends Tile {
   public void addPage(Page page) {
     if (mPageCount < MAXPAGES) {
       mButtons[mPageCount] = new Button(mPos.x()+10, mPos.y()+10+50*mPageCount, mSize.x()-20, 40);
+      mButtons[mPageCount].setText(page.name());
       mPages[mPageCount++] = page;
     }
   }

@@ -10,24 +10,15 @@
  * J Karstin Neill    08.11.18
  */
 
-
-//Declare Players, Gyms, Battles
-Player ben;
-Player will;
-Player jay;
-Gym pewter;
-Battle battle1;
-Battle battle2;
-Battle battle3;
-
 //Declare Tiles
 Menu menu;
-TextBox tb;
-TextBox tb2;
+Label lb1;
+Label lb2;
 
 //Declare Pages
-Page mainPage;
-Page secondPage;
+Page spotlightPage;
+Page playersPage;
+Page teamsPage;
 Page currentPage;
 
 //Runs once at the beginning of the application
@@ -38,62 +29,35 @@ public void setup() {
   //Dimensions of the window size are stored in system variables named "width" and "height," which can be accessed at any time
   size(600, 400);
   
-  //Initialize Player variables
-  ben  = new Player("Ben");
-  will = new Player("Will");
-  jay  = new Player("Jay");
-  
-  //Initialize Gym variables
-  Gym pewter = new Gym("Pewter");
-  
-  //Populate Player Teams
-  ben.team().addPokemon(new Pokemon("Bill", "Charmander", "Fire", "Male", 16));
-  
-  //Add Players to Gyms
-  pewter.addPlayer(ben);
-  pewter.addPlayer(jay);
-  pewter.addPlayer(will);
-  
-  //Initialize Battle variables
-  battle1 = new Battle(pewter, ben, jay, true);
-  battle2 = new Battle(pewter, ben, will, false);
-  battle3 = new Battle(pewter, jay, will, true);
-  
-  //Update Player data after Battles
-  ben.team().getPokemon(0).changeName("Carlos");
-  ben.team().getPokemon(0).changeLevel(25);
-  
-  tb = new TextBox(new Coord(40, 40), new Coord(160, 100), battle1.summary());
-  tb.setTextColor(color(255));
-  tb.setFillColor(color(255, 0, 255));
-  tb.setBorderColor(color(127));
-  tb2 = new TextBox(new Coord(300, 40), new Coord(160, 100), battle3.summary());
-  
   //Initialize Page variables
-  mainPage = new Page();
-  mainPage.addTile(tb);
-  secondPage = new Page();
-  secondPage.addTile(tb);
-  secondPage.addTile(tb2);
+  spotlightPage = new Page("SPOTLIGHT");
+  playersPage   = new Page("PLAYERS");
+  teamsPage     = new Page("TEAMS");
   
   //Intialize Tile variables
   menu = new Menu(width-100, 10, 100, 310);
-  menu.addPage(mainPage);
-  menu.addPage(secondPage);
+  menu.addPage(spotlightPage);
+  menu.addPage(playersPage);
+  menu.addPage(teamsPage);
+  lb1 = new Label(new Coord(20, 20), new Coord(200, 200), "Welcome to the SPOTLIGHT Page!");
+  lb2 = new Label(new Coord(90, 45), new Coord(200, 200), "Future PLAYERS Page, coming soon!");
   
-  mainPage.addTile(menu);
-  secondPage.addTile(menu);
+  spotlightPage.addTile(lb1);
+  spotlightPage.addTile(menu);
+  playersPage.addTile(lb2);
+  playersPage.addTile(menu);
+  teamsPage.addTile(menu);
   
   //Set starting value of currentPage
-  currentPage = mainPage;
+  currentPage = spotlightPage;
 }
 
-//Runs once every time any key on the keyboard is pressed down
-//Value of keyboard key which was pressed is stored as a char in a variable named "key"
-public void keyPressed() {
-  //If the [d] key was pressed, set the current Page to secondPage
-  if (key == 'd') {
-    currentPage = secondPage;
+//Called once each time a mouse button is pressed down and then released
+//Isn't called until the mouse button has been released
+public void mouseClicked() {
+  //Click Menu buttons
+  for (int b=0; menu.getButton(b) != null; b++) {
+    if (menu.getButton(b).click(mouseX, mouseY)) currentPage = menu.getPage(b);
   }
 }
 
@@ -105,10 +69,6 @@ public void draw() {
   background(127);
   //Show the contents of the current Page
   currentPage.show();
-  
-  if (mousePressed) {
-    for (int b=0; menu.getButton(b) != null; b++) {
-      if (menu.getButton(b).click(mouseX, mouseY)) currentPage = menu.getPage(b);
-    }
-  }
+  //Hover over Menu buttons
+  for (int b=0; menu.getButton(b) != null; b++) menu.getButton(b).hover(mouseX, mouseY);
 }

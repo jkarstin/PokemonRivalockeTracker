@@ -1,15 +1,31 @@
-public class Button extends Tile {
+public class Button extends Label {
   
   public Button() {
     super();
   }
   
   public Button(float x, float y, float w, float h) {
-    super(x, y, w, h);
-    mFillColor = color(255);
+    super(new Coord(x, y), new Coord(w, h));
+  }
+  
+  public void hover(Coord position) {
+    if (contains(position)) mFillColor = color(150);
+    else mFillColor = color(255);
+  }
+  
+  public void hover(float x, float y) {
+    this.hover(new Coord(x, y));
   }
   
   public boolean click(Coord position) {
+    return contains(position);
+  }
+  
+  public boolean click(float x, float y) {
+    return click(new Coord(x, y));
+  }
+  
+  private boolean contains(Coord position) {
     if (position.x() >= mPos.x() &&
         position.x() <= mPos.x()+mSize.x() &&
         position.y() >= mPos.y() &&
@@ -17,9 +33,5 @@ public class Button extends Tile {
       return true;
     }
     return false;
-  }
-  
-  public boolean click(float x, float y) {
-    return click(new Coord(x, y));
   }
 };

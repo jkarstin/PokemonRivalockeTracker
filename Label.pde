@@ -1,28 +1,28 @@
-/* TextBox.pde
+/* Label.pde
  * 
  * 
  * J Karstin Neill    08.11.18
  */
 
-public class TextBox extends Tile {
+public class Label extends Tile {
   private String mText;
   private color mTextColor;
   
-  public TextBox() {
+  public Label() {
     super();
     mText = "";
     mFillColor = color(255);
     mTextColor = color(0);
   }
   
-  public TextBox(Coord position, Coord size) {
+  public Label(Coord position, Coord size) {
     super(position, size);
     mText = "";
     mFillColor = color(255);
     mTextColor = color(0);
   }
   
-  public TextBox(Coord position, Coord size, String text) {
+  public Label(Coord position, Coord size, String text) {
     super(position, size);
     mText = text;
     mFillColor = color(255);
