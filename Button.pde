@@ -1,9 +1,9 @@
+/* Button.pde
+ * 
+ * J Karstin Neill    08.13.18
+ */
+
 public class Button extends Label {
-  
-  public Button() {
-    super();
-  }
-  
   public Button(float x, float y, float w, float h) {
     super(new Coord(x, y), new Coord(w, h));
   }

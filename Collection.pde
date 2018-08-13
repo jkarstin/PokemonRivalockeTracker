@@ -1,10 +1,13 @@
 /* Collection.pde
  * 
+ * List/Queue/Stack structure designed to make manipulation and organization of large
+ * groups of Tile instances and Tile children instances easier to manage.
+ * 
  * Uses Tile as "maximum parent" value for generic type.
  * The mElement array is thus populated by Tile objects,
  * and adding/getting uses typecasting to type T to give an outward generic type usage.
  * 
- * J Karstin Neill    08.12.18
+ * J Karstin Neill    08.13.18
  */
 
 public class Collection<E extends Tile> {
