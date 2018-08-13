@@ -9,8 +9,8 @@ public class Team extends Page {
   
   private Collection<Pokemon> mPokemon;
   
-  public Team() {
-    super("TEAM");
+  public Team(String name) {
+    super(name);
     mPokemon = new Collection<Pokemon>(MAXPOKEMON);
   }
   
