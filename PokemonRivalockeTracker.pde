@@ -20,7 +20,8 @@ Battle battle1;
 Battle battle2;
 Battle battle3;
 
-//Declare TextBoxes
+//Declare Tiles
+Menu menu;
 TextBox tb;
 TextBox tb2;
 
@@ -62,7 +63,6 @@ public void setup() {
   ben.team().getPokemon(0).changeName("Carlos");
   ben.team().getPokemon(0).changeLevel(25);
   
-  //Intialize TextBox variables
   tb = new TextBox(new Coord(40, 40), new Coord(160, 100), battle1.summary());
   tb.setTextColor(color(255));
   tb.setFillColor(color(255, 0, 255));
@@ -75,6 +75,14 @@ public void setup() {
   secondPage = new Page();
   secondPage.addTile(tb);
   secondPage.addTile(tb2);
+  
+  //Intialize Tile variables
+  menu = new Menu(width-100, 10, 100, 310);
+  menu.addPage(mainPage);
+  menu.addPage(secondPage);
+  
+  mainPage.addTile(menu);
+  secondPage.addTile(menu);
   
   //Set starting value of currentPage
   currentPage = mainPage;
@@ -97,4 +105,10 @@ public void draw() {
   background(127);
   //Show the contents of the current Page
   currentPage.show();
+  
+  if (mousePressed) {
+    for (int b=0; menu.getButton(b) != null; b++) {
+      if (menu.getButton(b).click(mouseX, mouseY)) currentPage = menu.getPage(b);
+    }
+  }
 }
