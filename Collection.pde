@@ -46,6 +46,10 @@ public class Collection<E extends Tile> {
     mElements[mCount++] = element;
   }
   
+  public void pushElement(E element) {
+    //Place new element as index 0, and shift all others up one index
+  }
+  
   public E getElement(int index) {
     if (index < mCount) return (E)mElements[index];
     return null;

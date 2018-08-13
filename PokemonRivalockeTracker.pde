@@ -11,13 +11,16 @@
  */
 
 //Declare Tiles
-Menu menu;
-Label lb1;
-Label lb2;
+Menu mainMenu;
+Menu playerMenu;
+Label spotlightWelcomeLabel;
+Label playerCreationWelcomeLabel;
+Label teamsWelcomeLabel;
 
 //Declare Pages
 Page spotlightPage;
 Page playersPage;
+Page playerCreationPage;
 Page teamsPage;
 Page currentPage;
 
@@ -32,21 +35,31 @@ public void setup() {
   //Initialize Page variables
   spotlightPage = new Page("SPOTLIGHT");
   playersPage   = new Page("PLAYERS");
+  playerCreationPage = new Page("PLAYER CREATION");
   teamsPage     = new Page("TEAMS");
   
   //Intialize Tile variables
-  menu = new Menu(width-100, 10, 100, 310);
-  menu.addPage(spotlightPage);
-  menu.addPage(playersPage);
-  menu.addPage(teamsPage);
-  lb1 = new Label(new Coord(20, 20), new Coord(200, 200), "Welcome to the SPOTLIGHT Page!");
-  lb2 = new Label(new Coord(90, 45), new Coord(200, 200), "Future PLAYERS Page, coming soon!");
+  mainMenu = new Menu(width-100, 10, 100, 310);
+  playerMenu = new Menu(80, 80, width-260, height-160);
+  spotlightWelcomeLabel      = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
+  playerCreationWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future PLAYER CREATION Page, coming soon!");
+  teamsWelcomeLabel          = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAMS Page, coming soon!");
   
-  spotlightPage.addTile(lb1);
-  spotlightPage.addTile(menu);
-  playersPage.addTile(lb2);
-  playersPage.addTile(menu);
-  teamsPage.addTile(menu);
+  //Populate menus
+  mainMenu.addPage(spotlightPage);
+  mainMenu.addPage(playersPage);
+  mainMenu.addPage(teamsPage);
+  playerMenu.addPage(playerCreationPage);
+  
+  //Populate pages
+  spotlightPage.addTile(spotlightWelcomeLabel);
+  spotlightPage.addMenu(mainMenu);
+  playersPage.addMenu(playerMenu);
+  playersPage.addMenu(mainMenu);
+  playerCreationPage.addTile(playerCreationWelcomeLabel);
+  playerCreationPage.addMenu(mainMenu);
+  teamsPage.addTile(teamsWelcomeLabel);
+  teamsPage.addMenu(mainMenu);
   
   //Set starting value of currentPage
   currentPage = spotlightPage;
@@ -56,8 +69,14 @@ public void setup() {
 //Isn't called until the mouse button has been released
 public void mouseClicked() {
   //Click Menu buttons
-  for (int b=0; menu.getButton(b) != null; b++) {
-    if (menu.getButton(b).click(mouseX, mouseY)) currentPage = menu.getPage(b);
+  Menu currentMenu;
+  Button currentButton;
+  for (int m=0; currentPage.getMenu(m) != null; m++) {
+    currentMenu = currentPage.getMenu(m);
+    for (int b=0; currentMenu.getButton(b) != null; b++) {
+      currentButton = currentMenu.getButton(b);
+      if (currentButton.click(mouseX, mouseY)) currentPage = currentMenu.getPage(b);
+    }
   }
 }
 
@@ -70,5 +89,9 @@ public void draw() {
   //Show the contents of the current Page
   currentPage.show();
   //Hover over Menu buttons
-  for (int b=0; menu.getButton(b) != null; b++) menu.getButton(b).hover(mouseX, mouseY);
+  for (int m=0; currentPage.getMenu(m) != null; m++) {
+    for (int b=0; currentPage.getMenu(m).getButton(b) != null; b++) {
+      currentPage.getMenu(m).getButton(b).hover(mouseX, mouseY);
+    }
+  }
 }
