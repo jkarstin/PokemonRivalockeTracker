@@ -10,6 +10,9 @@
  * J Karstin Neill    08.13.18
  */
 
+//Declare Players
+Player ben;
+
 //Declare Tiles
 Menu mainMenu;
 Menu playerMenu;
@@ -45,12 +48,6 @@ public void setup() {
   playerCreationWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future PLAYER CREATION Page, coming soon!");
   teamsWelcomeLabel          = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAMS Page, coming soon!");
   
-  //Populate menus
-  mainMenu.addPage(spotlightPage);
-  mainMenu.addPage(playersPage);
-  mainMenu.addPage(teamsPage);
-  playerMenu.addPage(playerCreationPage);
-  
   //Populate pages
   spotlightPage.addTile(spotlightWelcomeLabel);
   spotlightPage.addMenu(mainMenu);
@@ -63,6 +60,17 @@ public void setup() {
   
   //Set starting value of currentPage
   currentPage = spotlightPage;
+  
+  //Initialize Players
+  ben = new Player("BEN");
+  ben.profilePage().addMenu(mainMenu);
+  playerMenu.addPage(ben.profilePage());
+  
+  //Populate menus
+  mainMenu.addPage(spotlightPage);
+  mainMenu.addPage(playersPage);
+  mainMenu.addPage(teamsPage);
+  playerMenu.addPage(playerCreationPage);
 }
 
 //Called once each time a mouse button is pressed down and then released
