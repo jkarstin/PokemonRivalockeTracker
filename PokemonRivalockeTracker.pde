@@ -63,8 +63,8 @@ public void setup() {
   
   //Initialize Players
   ben = new Player("BEN");
-  ben.profilePage().addMenu(mainMenu);
-  playerMenu.addPage(ben.profilePage());
+  ben.addMenu(mainMenu);
+  playerMenu.addPage(ben);
   
   //Populate menus
   mainMenu.addPage(spotlightPage);

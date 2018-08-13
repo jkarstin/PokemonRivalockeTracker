@@ -4,25 +4,14 @@
  * J Karstin Neill    08.11.18
  */
 
-public class Player {
-  private String mName;
+public class Player extends Page {
   private Team mTeam;
-  private Page mProfilePage;
   
   public Player(String name) {
-    mName = name;
+    super(name + "'S PROFILE");
     mTeam = new Team();
-    mProfilePage = new Page(name + " PROFILE");
     Label profileLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future " + name + "'s PROFILE Page, coming soon!");
-    mProfilePage.addTile(profileLabel);
-  }
-  
-  public String name() {
-    return mName;
-  }
-  
-  public Page profilePage() {
-    return mProfilePage;
+    this.addTile(profileLabel);
   }
   
   public Team team() {

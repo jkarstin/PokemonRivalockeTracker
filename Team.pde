@@ -4,25 +4,21 @@
  * J Karstin Neill    08.11.18
  */
 
-public class Team {
+public class Team extends Page {
   private final static int MAXPOKEMON = 6;
   
-  private Pokemon[] mPokemon;
-  private int mPokemonCount;
+  private Collection<Pokemon> mPokemon;
   
   public Team() {
-    mPokemon = new Pokemon[MAXPOKEMON];
-    mPokemonCount = 0;
+    super("TEAM");
+    mPokemon = new Collection<Pokemon>(MAXPOKEMON);
   }
   
   public void addPokemon(Pokemon pokemon) {
-    if (mPokemonCount < MAXPOKEMON) {
-      mPokemon[mPokemonCount++] = pokemon;
-    }
+    mPokemon.addElement(pokemon);
   }
   
   public Pokemon getPokemon(int index) {
-    if (index < mPokemonCount) return mPokemon[index];
-    return null;
+    return mPokemon.getElement(index);
   }
 };

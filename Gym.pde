@@ -4,31 +4,21 @@
  * J Karstin Neill    08.11.18
  */
  
-public class Gym {
+public class Gym extends Page {
   private final static int MAXPLAYERS = 8;
   
-  private String mName;
-  private Player[] mPlayersInOrder;
-  private int mPlayerCount;
+  private Collection<Player> mPlayers;
   
   public Gym(String name) {
-    mName = name;
-    mPlayersInOrder = new Player[MAXPLAYERS];
-    mPlayerCount = 0;
+    super(name);
+    mPlayers = new Collection<Player>(MAXPLAYERS);
   }
   
   public void addPlayer(Player player) {
-    if (mPlayerCount < MAXPLAYERS) {
-      mPlayersInOrder[mPlayerCount++] = player;
-    }
-  }
-  
-  public String name() {
-    return mName;
+    mPlayers.addElement(player);
   }
   
   public Player first() {
-    if (mPlayerCount > 0) return mPlayersInOrder[0];
-    return null;
+    return mPlayers.getElement(0);
   }
 };

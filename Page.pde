@@ -5,12 +5,12 @@
  */
 
 public class Page extends Tile {
-  private final static int MAXTILES = 32;
-  private final static int MAXMENUS = 8;
+  protected final static int MAXTILES = 32;
+  protected final static int MAXMENUS = 8;
   
-  private Collection<Tile> mTiles;
-  private Collection<Menu> mMenus;
-  private String mName;
+  protected Collection<Tile> mTiles;
+  protected Collection<Menu> mMenus;
+  protected String mName;
   
   public Page(String name) {
     super(0, 0, width-1, height-1);

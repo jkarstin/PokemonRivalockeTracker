@@ -4,23 +4,18 @@
  * J Karstin Neill    08.11.18
  */
 
-public class Pokemon {
-  private String mName;
+public class Pokemon extends Page {
   private String mType;
   private String mBreed;
   private String mGender;
   private int mLevel;
   
   public Pokemon(String name, String breed, String type, String gender, int level) {
-    mName = name;
+    super(name);
     mBreed = breed;
     mType = type;
     mGender = gender;
     mLevel = level;
-  }
-  
-  public String name() {
-    return mName;
   }
   
   public void changeName(String newName) {
@@ -46,10 +41,6 @@ public class Pokemon {
   public String gender() {
     return mGender;
   }
-  
-  //public void changeGender(String newName) {
-  //  mName = newName;
-  //}
   
   public int level() {
     return mLevel;
