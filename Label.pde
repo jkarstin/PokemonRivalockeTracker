@@ -15,13 +15,6 @@ public class Label extends Tile {
     mTextColor = color(0);
   }
   
-  public Label(Coord position, Coord size) {
-    super(position, size);
-    mText = "";
-    mFillColor = color(255);
-    mTextColor = color(0);
-  }
-  
   public Label(Coord position, Coord size, String text) {
     super(position, size);
     mText = text;

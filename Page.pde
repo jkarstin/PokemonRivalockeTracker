@@ -15,7 +15,7 @@ public class Page extends Tile {
   protected String mName;
   
   public Page(String name) {
-    super(0, 0, width-1, height-1);
+    super(new Coord(), new Coord(width-1, height-1));
     mTiles   = new Collection<Tile>(MAXTILES);
     mMenus   = new Collection<Menu>(MAXMENUS);
     mButtons = new Collection<Button>(MAXBUTTONS);

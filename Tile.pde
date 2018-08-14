@@ -27,12 +27,6 @@ public class Tile {
     mFillColor   = color(0);
     mBorderColor = color(0);
   }
-  public Tile(float x, float y, float w, float h) {
-    mPos  = new Coord(x, y);
-    mSize = new Coord(w, h);
-    mFillColor   = color(0);
-    mBorderColor = color(0);
-  }
   public Tile(Coord position, Coord size) {
     mPos  = position.getCopy();
     mSize =     size.getCopy();
@@ -70,35 +64,18 @@ public class Tile {
     mPos.wrap(mSize.negate(), new Coord(width, height));
   }
   
-  //Wrapper method for move(Coord)
-  public void move(float deltaX, float deltaY) {
-    this.move(new Coord(deltaX, deltaY));
-  }
-  
   public void setPosition(Coord position) {
     Coord delta = position.minus(mPos);
     this.move(delta);
-  }
-  
-  public void setPosition(float x, float y) {
-    this.setPosition(new Coord(x, y));
   }
   
   public void grow(Coord delta) {
     mSize.plusEq(delta);
   }
   
-  public void grow(float w, float h) {
-    this.grow(new Coord(w, h));
-  }
-  
   public void setSize(Coord size) {
     Coord delta = size.minus(mSize);
     this.grow(delta);
-  }
-  
-  public void setSize(float w, float h) {
-    this.setSize(new Coord(w, h));
   }
   
   public void setFillColor(color fillColor) {

@@ -54,9 +54,9 @@ public void setup() {
   teamsPage          = new Page("TEAMS");
   
   //Intialize Tile variables
-  mainMenu           = new Menu(width-100, 10, 100, 310);
-  playerMenu         = new Menu(80, 80, width-260, height-160);
-  playerCreationMenu = new Menu(80, 80, width-260, height-160);
+  mainMenu           = new Menu(new Coord(width-100, 10), new Coord(100, 310));
+  playerMenu         = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
+  playerCreationMenu = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
   spotlightWelcomeLabel    = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
   namingPageNameLabel      = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
   teamCreationWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAM CREATION Page, coming soon!");

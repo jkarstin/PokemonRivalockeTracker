@@ -10,8 +10,8 @@ public class Menu extends Tile {
   private Collection<Button> mButtons;
   private Collection<Page>   mPages;
   
-  public Menu(float x, float y, float w, float h) {
-    super(x, y, w, h);
+  public Menu(Coord position, Coord size) {
+    super(position, size);
     mFillColor = color(127);
     mButtons = new Collection<Button>(MAXPAGES);
     mPages   = new Collection<Page>(MAXPAGES);
