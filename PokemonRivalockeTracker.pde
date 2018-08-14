@@ -21,6 +21,7 @@ Label spotlightWelcomeLabel;
 Label namingPageNameLabel;
 Label teamCreationWelcomeLabel;
 Label teamsWelcomeLabel;
+Button createPlayerButton;
 
 //Declare Pages
 Page spotlightPage;
@@ -60,6 +61,7 @@ public void setup() {
   namingPageNameLabel      = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
   teamCreationWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAM CREATION Page, coming soon!");
   teamsWelcomeLabel        = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAMS Page, coming soon!");
+  createPlayerButton = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE PLAYER");
   
   //Populate pages
   spotlightPage.addTile(spotlightWelcomeLabel);
@@ -67,9 +69,9 @@ public void setup() {
   playersPage.addMenu(playerMenu);
   playersPage.addMenu(mainMenu);
   playerCreationPage.addMenu(playerCreationMenu);
+  playerCreationPage.addButton(createPlayerButton);
   playerCreationPage.addMenu(mainMenu);
   namingPage.addTile(namingPageNameLabel);
-  
   namingPage.addButton(new Button(new Coord( 20,  60), new Coord(30, 30), "A"));
   namingPage.addButton(new Button(new Coord( 60,  60), new Coord(30, 30), "B"));
   namingPage.addButton(new Button(new Coord(100,  60), new Coord(30, 30), "C"));
@@ -99,7 +101,6 @@ public void setup() {
   namingPage.addButton(new Button(new Coord(100, 300), new Coord(40, 30), "DEL"));
   namingPage.addButton(new Button(new Coord(150, 300), new Coord(50, 30), "DONE"));
   namingPage.addButton(new Button(new Coord( 20, 340), new Coord(60, 30), "SPACE"));
-  
   namingPage.addMenu(mainMenu);
   teamCreationPage.addTile(teamCreationWelcomeLabel);
   teamCreationPage.addMenu(mainMenu);
@@ -129,20 +130,24 @@ public void setup() {
 //Called once each time a mouse button is pressed down and then released
 //Isn't called until the mouse button has been released
 public void mouseClicked() {
-  //Click currentPage Menu buttons
-  Menu currentMenu;
-  Button currentButton;
+  Button currentButton = null;
+  
+  //currentPage Menu Buttons
+  Menu currentMenu = null;
   for (int m=0; currentPage.getMenu(m) != null; m++) {
     currentMenu = currentPage.getMenu(m);
     for (int b=0; currentMenu.getButton(b) != null; b++) {
       currentButton = currentMenu.getButton(b);
       if (currentButton.click(mouseX, mouseY)) {
-        if (currentPage == namingPage) {
+        //If you leave namingPage or playerCreationPage through mainMenu, and not by using creation buttons, clear nameData
+        if (currentMenu == mainMenu && (currentPage == namingPage || currentPage == playerCreationPage)) {
           //Reset nameData
           nameData = "";
           nameDataCharCount = 0;
+          //Update namingPageNameLabel
           namingPageNameLabel.setText("NAME: " + nameData);
         }
+        //Save currentPage to lastPage, and change currentPage to destination designated by menu button
         lastPage = currentPage;
         currentPage = currentMenu.getPage(b);
         //Don't process any more mouse actions this frame
@@ -150,49 +155,70 @@ public void mouseClicked() {
       }
     }
   }
-  currentMenu = null;
-  currentButton = null;
   
-  //Click namingPage buttons
+  //Naming Page Buttons
   if (currentPage == namingPage) {
     for (int b=0; currentPage.getButton(b) != null; b++) {
       currentButton = currentPage.getButton(b);
       if (currentButton.click(mouseX, mouseY)) {
+        //If DEL button clicked
         if (currentButton.getText() == "DEL") {
+          //If there is at least one character in nameData
           if (nameDataCharCount > 0) {
+            //Remove last character by using String.substring()
             nameDataCharCount--;
             nameData = nameData.substring(0, nameDataCharCount);
           }
         }
+        //If SPACE button clicked
         else if (currentButton.getText() == "SPACE") {
+          //Manually add space character
           nameDataCharCount++;
           nameData += " ";
         }
+        //If DONE button clicked
         else if (currentButton.getText() == "DONE") {
           //Go back to last page
           currentPage = lastPage;
-          //Create a new player using nameData
-          Player p = new Player(nameData);
-          p.addMenu(mainMenu);
-          //Add player to players collection
-          players.addElement(p);
-          //Add player to playersPage
-          Page creationPage = playerMenu.removePage(playerMenu.pageCount()-1);
-          playerMenu.addPage(p);
-          playerMenu.addPage(creationPage);
-          //Reset nameData
-          nameData = "";
-          nameDataCharCount = 0;
           //Don't process any more mouse actions this frame
           return;
         }
+        //If any other non-menu button clicked, add its text to nameData
         else {
           nameDataCharCount++;
           nameData += currentButton.getText();
         }
       }
     }
+    //Update namingPageNameLabel to reflect current nameData value
     namingPageNameLabel.setText("NAME: " + nameData);
+  }
+  
+  //Player Creation Page Buttons
+  if (currentPage == playerCreationPage) {
+    if (createPlayerButton.click(mouseX, mouseY)) {
+      currentPage = playersPage;
+      lastPage = playersPage;
+      //Create a new player using nameData
+      Player p = new Player(nameData);
+      p.addMenu(mainMenu);
+      //Add player to players collection
+      players.addElement(p);
+      //Add player to playersPage
+      //Remove and temporarily save last page in playerMenu (always playerCreationPage)
+      Page creationPage = playerMenu.removePage(playerMenu.pageCount()-1);
+      //Add new player as page to playerMenu
+      playerMenu.addPage(p);
+      //Put last page back on the end of the playerMenu page collection
+      playerMenu.addPage(creationPage);
+      //Reset nameData
+      nameData = "";
+      nameDataCharCount = 0;
+      //Update namingPageNameLabel
+      namingPageNameLabel.setText("NAME: " + nameData);
+      //Don't process any more mouse actions this frame
+      return;
+    }
   }
 }
 
@@ -204,7 +230,7 @@ public void draw() {
   background(127);
   //Show the contents of the current Page
   currentPage.show();
-  //Hover over Menu buttons
+  //Hover over Menu and Page buttons
   for (int m=0; currentPage.getMenu(m) != null; m++) {
     for (int b=0; currentPage.getMenu(m).getButton(b) != null; b++) {
       currentPage.getMenu(m).getButton(b).hover(mouseX, mouseY);

@@ -20,9 +20,7 @@ public class Menu extends Tile {
   //Create a button for the page, and add the page and its corresponding button to the collections
   public void addPage(Page page) {
     int currentPageIndex = mPages.count();
-    Button tmp = new Button(mPos.x()+10, mPos.y()+10+50*currentPageIndex, mSize.x()-20, 40);
-    tmp.setText(page.name());
-    mButtons.addElement(tmp);
+    mButtons.addElement(new Button(new Coord(mPos.x()+10, mPos.y()+10+50*currentPageIndex), new Coord(mSize.x()-20, 40), page.name()));
     mPages.addElement(page);
   }
   
