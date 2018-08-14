@@ -64,6 +64,7 @@ public class Collection<E extends Tile> {
         else if (i > index) tmp[i-1] = mElements[i];
         else continue;
       }
+      tmp[mCount-1] = null;
       mElements = tmp;
       tmp = null;
       mCount--;

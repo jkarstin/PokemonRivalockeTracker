@@ -5,17 +5,20 @@
  */
 
 public class Page extends Tile {
-  protected final static int MAXTILES = 32;
-  protected final static int MAXMENUS = 8;
+  protected final static int MAXTILES   = 64;
+  protected final static int MAXMENUS   = 8;
+  protected final static int MAXBUTTONS = 32;
   
-  protected Collection<Tile> mTiles;
-  protected Collection<Menu> mMenus;
+  protected Collection<Tile>   mTiles;
+  protected Collection<Button> mButtons;
+  protected Collection<Menu>   mMenus;
   protected String mName;
   
   public Page(String name) {
     super(0, 0, width-1, height-1);
-    mTiles = new Collection<Tile>(MAXTILES);
-    mMenus = new Collection<Menu>(MAXMENUS);
+    mTiles   = new Collection<Tile>(MAXTILES);
+    mMenus   = new Collection<Menu>(MAXMENUS);
+    mButtons = new Collection<Button>(MAXBUTTONS);
     mName = name;
   }
   
@@ -25,6 +28,15 @@ public class Page extends Tile {
   
   public Menu getMenu(int index) {
     return mMenus.getElement(index);
+  }
+  
+  public Button getButton(int index) {
+    return mButtons.getElement(index);
+  }
+  
+  public void addButton(Button button) {
+    mButtons.addElement(button);
+    this.addTile(button);
   }
   
   //Adds given menu to both menu collection and tile collection

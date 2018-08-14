@@ -39,6 +39,15 @@ public class Menu extends Tile {
     return mPages.getElement(index);
   }
   
+  public Page removePage(int index) {
+    mButtons.removeElement(index);
+    return mPages.removeElement(index);
+  }
+  
+  public int pageCount() {
+    return mPages.count();
+  }
+  
   public void show() {
     super.show();
     for (int b=0; mButtons.getElement(b) != null; b++) {

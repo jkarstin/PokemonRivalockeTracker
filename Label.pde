@@ -29,6 +29,10 @@ public class Label extends Tile {
     mTextColor = color(0);
   }
   
+  public String getText() {
+    return mText;
+  }
+  
   public void setTextColor(color textColor) {
     mTextColor = textColor;
   }

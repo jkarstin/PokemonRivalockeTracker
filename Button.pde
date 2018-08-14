@@ -4,6 +4,10 @@
  */
 
 public class Button extends Label {
+  public Button(Coord position, Coord size, String text) {
+    super(position, size, text);
+  }
+  
   public Button(float x, float y, float w, float h) {
     super(new Coord(x, y), new Coord(w, h));
   }
