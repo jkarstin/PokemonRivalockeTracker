@@ -103,6 +103,7 @@ public void setup() {
   namingPage.addButton(new Button(new Coord( 20, 340), new Coord(60, 30), "SPACE"));
   namingPage.addMenu(mainMenu);
   teamCreationPage.addTile(teamCreationWelcomeLabel);
+  teamCreationPage.addButton(new Button(new Coord(90, 60), new Coord(80, 30), "BACK"));
   teamCreationPage.addMenu(mainMenu);
   teamsPage.addTile(teamsWelcomeLabel);
   teamsPage.addMenu(mainMenu);
@@ -218,6 +219,14 @@ public void mouseClicked() {
       namingPageNameLabel.setText("NAME: " + nameData);
       //Don't process any more mouse actions this frame
       return;
+    }
+  }
+  
+  //Team Creation Page Buttons
+  if (currentPage == teamCreationPage) {
+    //First and only Button on this page is currently a "BACK" button
+    if (teamCreationPage.getButton(0).click(mouseX, mouseY)) {
+      currentPage = lastPage;
     }
   }
 }
