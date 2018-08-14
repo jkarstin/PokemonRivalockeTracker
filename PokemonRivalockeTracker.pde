@@ -137,8 +137,16 @@ public void mouseClicked() {
     for (int b=0; currentMenu.getButton(b) != null; b++) {
       currentButton = currentMenu.getButton(b);
       if (currentButton.click(mouseX, mouseY)) {
+        if (currentPage == namingPage) {
+          //Reset nameData
+          nameData = "";
+          nameDataCharCount = 0;
+          namingPageNameLabel.setText("NAME: " + nameData);
+        }
         lastPage = currentPage;
         currentPage = currentMenu.getPage(b);
+        //Don't process any more mouse actions this frame
+        return;
       }
     }
   }
@@ -161,16 +169,22 @@ public void mouseClicked() {
           nameData += " ";
         }
         else if (currentButton.getText() == "DONE") {
+          //Go back to last page
           currentPage = lastPage;
+          //Create a new player using nameData
           Player p = new Player(nameData);
           p.addMenu(mainMenu);
+          //Add player to players collection
           players.addElement(p);
+          //Add player to playersPage
           Page creationPage = playerMenu.removePage(playerMenu.pageCount()-1);
           playerMenu.addPage(p);
           playerMenu.addPage(creationPage);
+          //Reset nameData
           nameData = "";
           nameDataCharCount = 0;
-          break;
+          //Don't process any more mouse actions this frame
+          return;
         }
         else {
           nameDataCharCount++;
@@ -196,4 +210,5 @@ public void draw() {
       currentPage.getMenu(m).getButton(b).hover(mouseX, mouseY);
     }
   }
+  for (int b=0; currentPage.getButton(b) != null; b++) currentPage.getButton(b).hover(mouseX, mouseY);
 }
