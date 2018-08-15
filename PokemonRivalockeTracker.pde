@@ -55,11 +55,11 @@ public void setup() {
   //Initialize Page variables
   spotlightPage       = new Page("SPOTLIGHT");
   playersPage         = new Page("PLAYERS");
-  playerCreationPage  = new Page("PLAYER CREATION");
-  teamCreationPage    = new Page("TEAM CREATION");
-  pokemonCreationPage = new Page("POKEMON CREATION");
+  playerCreationPage  = new Page("+ ADD A PLAYER");
+  teamCreationPage    = new Page("BUILD A TEAM");
+  pokemonCreationPage = new Page("+ ADD A POKEMON");
   teamsPage           = new Page("TEAMS");
-  namingPage          = new Page("NAMING");
+  namingPage          = new Page("CREATE A NAME");
   
   //Intialize Tile variables
   mainMenu            = new Menu(new Coord(width-100, 10), new Coord(100, 310));
