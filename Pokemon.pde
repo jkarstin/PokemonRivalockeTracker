@@ -16,6 +16,8 @@ public class Pokemon extends Page {
     mType = type;
     mGender = gender;
     mLevel = level;
+    Label profileLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future " + name + "'s PROFILE Page, coming soon!");
+    this.addTile(profileLabel);
   }
   
   public void changeName(String newName) {

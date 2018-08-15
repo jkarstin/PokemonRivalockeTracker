@@ -7,6 +7,9 @@
  * 
  * See code for more detailed commenting on execution process.
  * 
+ * TODO: May need to add a nameQueue to keep track of all of the name strings used in order to make the objects.
+ * Need better management of lastPage variable. Not keeping track well enough. Perhaps have a collection of pages passed in order.
+ * 
  * J Karstin Neill    08.13.18
  */
 
@@ -17,19 +20,23 @@ Collection<Player> players;
 Menu mainMenu;
 Menu playerMenu;
 Menu playerCreationMenu;
+Menu teamCreationMenu;
+Menu pokemonCreationMenu;
 Label spotlightWelcomeLabel;
 Label namingPageNameLabel;
-Label teamCreationWelcomeLabel;
 Label teamsWelcomeLabel;
 Button createPlayerButton;
+Button createTeamButton;
+Button createPokemonButton;
 
 //Declare Pages
 Page spotlightPage;
 Page playersPage;
 Page playerCreationPage;
-Page namingPage;
 Page teamCreationPage;
+Page pokemonCreationPage;
 Page teamsPage;
+Page namingPage;
 Page lastPage;
 Page currentPage;
 
@@ -46,22 +53,26 @@ public void setup() {
   size(600, 400);
   
   //Initialize Page variables
-  spotlightPage      = new Page("SPOTLIGHT");
-  playersPage        = new Page("PLAYERS");
-  playerCreationPage = new Page("PLAYER CREATION");
-  namingPage         = new Page("NAMING");
-  teamCreationPage   = new Page("TEAM CREATION");
-  teamsPage          = new Page("TEAMS");
+  spotlightPage       = new Page("SPOTLIGHT");
+  playersPage         = new Page("PLAYERS");
+  playerCreationPage  = new Page("PLAYER CREATION");
+  teamCreationPage    = new Page("TEAM CREATION");
+  pokemonCreationPage = new Page("POKEMON CREATION");
+  teamsPage           = new Page("TEAMS");
+  namingPage          = new Page("NAMING");
   
   //Intialize Tile variables
-  mainMenu           = new Menu(new Coord(width-100, 10), new Coord(100, 310));
-  playerMenu         = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
-  playerCreationMenu = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
-  spotlightWelcomeLabel    = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
-  namingPageNameLabel      = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
-  teamCreationWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAM CREATION Page, coming soon!");
-  teamsWelcomeLabel        = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAMS Page, coming soon!");
-  createPlayerButton = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE PLAYER");
+  mainMenu            = new Menu(new Coord(width-100, 10), new Coord(100, 310));
+  playerMenu          = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
+  playerCreationMenu  = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
+  teamCreationMenu    = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
+  pokemonCreationMenu = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
+  spotlightWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
+  namingPageNameLabel   = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
+  teamsWelcomeLabel     = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAMS Page, coming soon!");
+  createPlayerButton  = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE PLAYER");
+  createTeamButton    = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE TEAM");
+  createPokemonButton = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE POKEMON");
   
   //Populate pages
   spotlightPage.addTile(spotlightWelcomeLabel);
@@ -71,6 +82,14 @@ public void setup() {
   playerCreationPage.addMenu(playerCreationMenu);
   playerCreationPage.addButton(createPlayerButton);
   playerCreationPage.addMenu(mainMenu);
+  teamCreationPage.addMenu(teamCreationMenu);
+  teamCreationPage.addButton(createTeamButton);
+  teamCreationPage.addMenu(mainMenu);
+  pokemonCreationPage.addMenu(pokemonCreationMenu);
+  pokemonCreationPage.addButton(createPokemonButton);
+  pokemonCreationPage.addMenu(mainMenu);
+  teamsPage.addTile(teamsWelcomeLabel);
+  teamsPage.addMenu(mainMenu);
   namingPage.addTile(namingPageNameLabel);
   namingPage.addButton(new Button(new Coord( 20,  60), new Coord(30, 30), "A"));
   namingPage.addButton(new Button(new Coord( 60,  60), new Coord(30, 30), "B"));
@@ -102,26 +121,23 @@ public void setup() {
   namingPage.addButton(new Button(new Coord(150, 300), new Coord(50, 30), "DONE"));
   namingPage.addButton(new Button(new Coord( 20, 340), new Coord(60, 30), "SPACE"));
   namingPage.addMenu(mainMenu);
-  teamCreationPage.addTile(teamCreationWelcomeLabel);
-  teamCreationPage.addButton(new Button(new Coord(90, 60), new Coord(80, 30), "BACK"));
-  teamCreationPage.addMenu(mainMenu);
-  teamsPage.addTile(teamsWelcomeLabel);
-  teamsPage.addMenu(mainMenu);
   
   //Set starting value of currentPage
   lastPage = spotlightPage;
   currentPage = spotlightPage;
   
-  //Initialize Players
+  //Initialize players collection
   players = new Collection<Player>();
   
   //Populate menus
   mainMenu.addPage(spotlightPage);
   mainMenu.addPage(playersPage);
-  mainMenu.addPage(teamsPage);
+  //mainMenu.addPage(teamsPage);
   playerMenu.addPage(playerCreationPage);
   playerCreationMenu.addPage(namingPage);
   playerCreationMenu.addPage(teamCreationPage);
+  teamCreationMenu.addPage(pokemonCreationPage);
+  pokemonCreationMenu.addPage(namingPage);
   
   //Initialize system variables
   nameData = "";
@@ -197,6 +213,7 @@ public void mouseClicked() {
   
   //Player Creation Page Buttons
   if (currentPage == playerCreationPage) {
+    //If CREATE PLAYER button is clicked, make new Player using nameData
     if (createPlayerButton.click(mouseX, mouseY)) {
       currentPage = playersPage;
       lastPage = playersPage;
@@ -224,8 +241,16 @@ public void mouseClicked() {
   
   //Team Creation Page Buttons
   if (currentPage == teamCreationPage) {
-    //First and only Button on this page is currently a "BACK" button
-    if (teamCreationPage.getButton(0).click(mouseX, mouseY)) {
+    //For now, when CREATE TEAM button is clicked, go back to last page
+    if (createTeamButton.click(mouseX, mouseY)) {
+      currentPage = lastPage;
+    }
+  }
+  
+  //Pokemon Creation Page Buttons
+  if (currentPage == pokemonCreationPage) {
+    //For now, when CREATE POKEMON button is clicked, go back to last page
+    if (createPokemonButton.click(mouseX, mouseY)) {
       currentPage = lastPage;
     }
   }
