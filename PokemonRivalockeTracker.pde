@@ -310,6 +310,7 @@ public void mouseClicked() {
   if (currentPage == levelNumberPage) {
     //For now, when SET LEVEL button is clicked, go back to last page
     if (setLevelButton.click(new Coord(mouseX, mouseY))) {
+      //Go back to previous page
       currentPage = pageHistory.removeTail();
       //Don't process any more mouse actions this frame
       return;
@@ -318,8 +319,10 @@ public void mouseClicked() {
   
   //Pokemon Type Selection Page Buttons
   if (currentPage == typeSelectionPage) {
+    //Check every Type button
     for (int b=0; currentPage.getButton(b) != null; b++) {
       currentButton = currentPage.getButton(b);
+      //If a given Type button is clicked, set pokemonType to its corresponding PokeData.Type value
       if (currentButton.click(new Coord(mouseX, mouseY))) {
         if (currentButton == normalTypeButton)      pokemonType = PokeData.Type.NORMAL;
         else if (currentButton == fightTypeButton)  pokemonType = PokeData.Type.FIGHT;
@@ -339,8 +342,7 @@ public void mouseClicked() {
         else if (currentButton == dragonTypeButton) pokemonType = PokeData.Type.DRAGON;
         else if (currentButton == darkTypeButton)   pokemonType = PokeData.Type.DARK;
         else if (currentButton == fairyTypeButton)  pokemonType = PokeData.Type.FAIRY;
-        //Once type is selected, automatically move back to last page
-        //Go back to previous page
+        //Once type is selected, automatically move back to previous page
         currentPage = pageHistory.removeTail();
         //Don't process any more mouse actions this frame
         return;
