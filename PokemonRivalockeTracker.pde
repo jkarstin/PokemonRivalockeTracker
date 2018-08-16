@@ -14,7 +14,7 @@
  */
 
 //Declare Players
-Collection<Player> players;
+Collection<Player> players; //Currently unused; here as a placeholder if needed in the future
 
 //Declare Tiles
 Menu mainMenu;
@@ -25,9 +25,30 @@ Menu pokemonCreationMenu;
 Label spotlightWelcomeLabel;
 Label namingPageNameLabel;
 Label teamsWelcomeLabel;
+Label levelNumberLabel;
 Button createPlayerButton;
 Button createTeamButton;
 Button createPokemonButton;
+Button chooseTypeButton;
+Button setLevelButton;
+Button normalTypeButton;
+Button fightTypeButton;
+Button flyingTypeButton;
+Button poisonTypeButton;
+Button groundTypeButton;
+Button rockTypeButton;
+Button bugTypeButton;
+Button ghostTypeButton;
+Button steelTypeButton;
+Button fireTypeButton;
+Button waterTypeButton;
+Button grassTypeButton;
+Button electrTypeButton;
+Button psychcTypeButton;
+Button iceTypeButton;
+Button dragonTypeButton;
+Button darkTypeButton;
+Button fairyTypeButton;
 
 //Declare Pages
 Page spotlightPage;
@@ -35,14 +56,23 @@ Page playersPage;
 Page playerCreationPage;
 Page teamCreationPage;
 Page pokemonCreationPage;
+Page typeSelectionPage;
+Page genderSelectionPage;
+Page levelNumberPage;
 Page teamsPage;
 Page namingPage;
-Page lastPage;
 Page currentPage;
 
 //Declare system variables
 String nameData;
 int nameDataCharCount;
+String          playerName;
+String          pokemonName;
+PokeData.Breed  pokemonBreed;
+PokeData.Type   pokemonType;
+PokeData.Gender pokemonGender;
+int             pokemonLevel;
+Collection<Page> pageHistory;
 
 //Runs once at the beginning of the application
 //Similar to the "int main()" function in C++ programs
@@ -58,6 +88,8 @@ public void setup() {
   playerCreationPage  = new Page("+ ADD A PLAYER");
   teamCreationPage    = new Page("BUILD A TEAM");
   pokemonCreationPage = new Page("+ ADD A POKEMON");
+  typeSelectionPage   = new Page("CHOOSE A TYPE");
+  levelNumberPage     = new Page("SET THEIR LEVEL");
   teamsPage           = new Page("TEAMS");
   namingPage          = new Page("CREATE A NAME");
   
@@ -70,9 +102,30 @@ public void setup() {
   spotlightWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
   namingPageNameLabel   = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
   teamsWelcomeLabel     = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAMS Page, coming soon!");
+  levelNumberLabel      = new Label(new Coord(20, 20), new Coord(350, 30), "LEVEL: ");
   createPlayerButton  = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE PLAYER");
   createTeamButton    = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE TEAM");
   createPokemonButton = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE POKEMON");
+  setLevelButton      = new Button(new Coord(90, height-130), new Coord(width-280, 40), "SET LEVEL");
+  chooseTypeButton    = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CHOOSE TYPE");
+  normalTypeButton = new Button(new Coord( 40,  40), new Coord(70, 30), "NORMAL");
+  fightTypeButton  = new Button(new Coord(120,  40), new Coord(70, 30), "FIGHT" );
+  flyingTypeButton = new Button(new Coord(200,  40), new Coord(70, 30), "FLYING");
+  poisonTypeButton = new Button(new Coord(280,  40), new Coord(70, 30), "POISON");
+  groundTypeButton = new Button(new Coord( 40,  80), new Coord(70, 30), "GROUND");
+  rockTypeButton   = new Button(new Coord(120,  80), new Coord(70, 30), "ROCK"  );
+  bugTypeButton    = new Button(new Coord(200,  80), new Coord(70, 30), "BUG"   );
+  ghostTypeButton  = new Button(new Coord(280,  80), new Coord(70, 30), "GHOST" );
+  steelTypeButton  = new Button(new Coord( 40, 120), new Coord(70, 30), "STEEL" );
+  fireTypeButton   = new Button(new Coord(120, 120), new Coord(70, 30), "FIRE"  );
+  waterTypeButton  = new Button(new Coord(200, 120), new Coord(70, 30), "WATER" );
+  grassTypeButton  = new Button(new Coord(280, 120), new Coord(70, 30), "GRASS" );
+  electrTypeButton = new Button(new Coord( 40, 160), new Coord(70, 30), "ELECTR");
+  psychcTypeButton = new Button(new Coord(120, 160), new Coord(70, 30), "PSYCHC");
+  iceTypeButton    = new Button(new Coord(200, 160), new Coord(70, 30), "ICE"   );
+  dragonTypeButton = new Button(new Coord(280, 160), new Coord(70, 30), "DRAGON");
+  darkTypeButton   = new Button(new Coord(120, 200), new Coord(70, 30), "DARK"  );
+  fairyTypeButton  = new Button(new Coord(200, 200), new Coord(70, 30), "FAIRY" );
   
   //Populate pages
   spotlightPage.addTile(spotlightWelcomeLabel);
@@ -88,6 +141,39 @@ public void setup() {
   pokemonCreationPage.addMenu(pokemonCreationMenu);
   pokemonCreationPage.addButton(createPokemonButton);
   pokemonCreationPage.addMenu(mainMenu);
+  typeSelectionPage.addButton(normalTypeButton);
+  typeSelectionPage.addButton( fightTypeButton);
+  typeSelectionPage.addButton(flyingTypeButton);
+  typeSelectionPage.addButton(poisonTypeButton);
+  typeSelectionPage.addButton(groundTypeButton);
+  typeSelectionPage.addButton(  rockTypeButton);
+  typeSelectionPage.addButton(   bugTypeButton);
+  typeSelectionPage.addButton( ghostTypeButton);
+  typeSelectionPage.addButton( steelTypeButton);
+  typeSelectionPage.addButton(  fireTypeButton);
+  typeSelectionPage.addButton( waterTypeButton);
+  typeSelectionPage.addButton( grassTypeButton);
+  typeSelectionPage.addButton(electrTypeButton);
+  typeSelectionPage.addButton(psychcTypeButton);
+  typeSelectionPage.addButton(   iceTypeButton);
+  typeSelectionPage.addButton(dragonTypeButton);
+  typeSelectionPage.addButton(  darkTypeButton);
+  typeSelectionPage.addButton( fairyTypeButton);
+  typeSelectionPage.addButton(chooseTypeButton);
+  levelNumberPage.addTile(levelNumberLabel);
+  levelNumberPage.addButton(new Button(new Coord( 80, 180), new Coord(30, 30), "0"));
+  levelNumberPage.addButton(new Button(new Coord( 40, 140), new Coord(30, 30), "1"));
+  levelNumberPage.addButton(new Button(new Coord( 80, 140), new Coord(30, 30), "2"));
+  levelNumberPage.addButton(new Button(new Coord(120, 140), new Coord(30, 30), "3"));
+  levelNumberPage.addButton(new Button(new Coord( 40, 100), new Coord(30, 30), "4"));
+  levelNumberPage.addButton(new Button(new Coord( 80, 100), new Coord(30, 30), "5"));
+  levelNumberPage.addButton(new Button(new Coord(120, 100), new Coord(30, 30), "6"));
+  levelNumberPage.addButton(new Button(new Coord( 40,  60), new Coord(30, 30), "7"));
+  levelNumberPage.addButton(new Button(new Coord( 80,  60), new Coord(30, 30), "8"));
+  levelNumberPage.addButton(new Button(new Coord(120,  60), new Coord(30, 30), "9"));
+  levelNumberPage.addButton(setLevelButton);
+  levelNumberPage.addMenu(mainMenu);
+  typeSelectionPage.addMenu(mainMenu);
   teamsPage.addTile(teamsWelcomeLabel);
   teamsPage.addMenu(mainMenu);
   namingPage.addTile(namingPageNameLabel);
@@ -123,7 +209,6 @@ public void setup() {
   namingPage.addMenu(mainMenu);
   
   //Set starting value of currentPage
-  lastPage = spotlightPage;
   currentPage = spotlightPage;
   
   //Initialize players collection
@@ -132,16 +217,25 @@ public void setup() {
   //Populate menus
   mainMenu.addPage(spotlightPage);
   mainMenu.addPage(playersPage);
-  //mainMenu.addPage(teamsPage);
+  mainMenu.addPage(teamsPage); //Not yet useful
   playerMenu.addPage(playerCreationPage);
   playerCreationMenu.addPage(namingPage);
   playerCreationMenu.addPage(teamCreationPage);
   teamCreationMenu.addPage(pokemonCreationPage);
   pokemonCreationMenu.addPage(namingPage);
+  pokemonCreationMenu.addPage(typeSelectionPage);
+  pokemonCreationMenu.addPage(levelNumberPage);
   
   //Initialize system variables
   nameData = "";
   nameDataCharCount = 0;
+  playerName    = "";
+  pokemonName   = "";
+  pokemonBreed  = PokeData.Breed.NONE;
+  pokemonType   = PokeData.Type.NORMAL;
+  pokemonGender = PokeData.Gender.FEMALE;
+  pokemonLevel  = 0;
+  pageHistory = new Collection<Page>();
 }
 
 //Called once each time a mouse button is pressed down and then released
@@ -155,17 +249,9 @@ public void mouseClicked() {
     currentMenu = currentPage.getMenu(m);
     for (int b=0; currentMenu.getButton(b) != null; b++) {
       currentButton = currentMenu.getButton(b);
-      if (currentButton.click(mouseX, mouseY)) {
-        //If you leave namingPage or playerCreationPage through mainMenu, and not by using creation buttons, clear nameData
-        if (currentMenu == mainMenu && (currentPage == namingPage || currentPage == playerCreationPage)) {
-          //Reset nameData
-          nameData = "";
-          nameDataCharCount = 0;
-          //Update namingPageNameLabel
-          namingPageNameLabel.setText("NAME: " + nameData);
-        }
-        //Save currentPage to lastPage, and change currentPage to destination designated by menu button
-        lastPage = currentPage;
+      if (currentButton.click(new Coord(mouseX, mouseY))) {
+        //Save currentPage to pageHistory, and change currentPage to destination designated by menu button
+        pageHistory.addElement(currentPage);
         currentPage = currentMenu.getPage(b);
         //Don't process any more mouse actions this frame
         return;
@@ -177,7 +263,7 @@ public void mouseClicked() {
   if (currentPage == namingPage) {
     for (int b=0; currentPage.getButton(b) != null; b++) {
       currentButton = currentPage.getButton(b);
-      if (currentButton.click(mouseX, mouseY)) {
+      if (currentButton.click(new Coord(mouseX, mouseY))) {
         //If DEL button clicked
         if (currentButton.getText() == "DEL") {
           //If there is at least one character in nameData
@@ -195,8 +281,18 @@ public void mouseClicked() {
         }
         //If DONE button clicked
         else if (currentButton.getText() == "DONE") {
+          
+          //If we entered namingPage from playerCreationPage, nameData will be the new Player's name
+          if (pageHistory.getTail() == playerCreationPage) {
+            playerName = nameData;
+          }
+          //If we entered namingPage from pokemonCreationPage, nameData will be the new Pokemon's name
+          if (pageHistory.getTail() == pokemonCreationPage) {
+            pokemonName = nameData;
+          }
+          
           //Go back to last page
-          currentPage = lastPage;
+          currentPage = pageHistory.removeTail();
           //Don't process any more mouse actions this frame
           return;
         }
@@ -211,14 +307,33 @@ public void mouseClicked() {
     namingPageNameLabel.setText("NAME: " + nameData);
   }
   
+  //Level Number Page Buttons
+  if (currentPage == levelNumberPage) {
+    //For now, when SET LEVEL button is clicked, go back to last page
+    if (setLevelButton.click(new Coord(mouseX, mouseY))) {
+      currentPage = pageHistory.removeTail();
+      //Don't process any more mouse actions this frame
+      return;
+    }
+  }
+  
+  //Pokemon Type Selection Page Buttons
+  if (currentPage == typeSelectionPage) {
+    //For now, when CHOOSE TYPE button is clicked, go back to last page
+    if (chooseTypeButton.click(new Coord(mouseX, mouseY))) {
+      currentPage = pageHistory.removeTail();
+      //Don't process any more mouse actions this frame
+      return;
+    }
+  }
+  
   //Player Creation Page Buttons
   if (currentPage == playerCreationPage) {
     //If CREATE PLAYER button is clicked, make new Player using nameData
-    if (createPlayerButton.click(mouseX, mouseY)) {
-      currentPage = playersPage;
-      lastPage = playersPage;
+    if (createPlayerButton.click(new Coord(mouseX, mouseY))) {
+      currentPage = pageHistory.removeTail();
       //Create a new player using nameData
-      Player p = new Player(nameData);
+      Player p = new Player(playerName);
       p.addMenu(mainMenu);
       //Add player to players collection
       players.addElement(p);
@@ -242,16 +357,20 @@ public void mouseClicked() {
   //Team Creation Page Buttons
   if (currentPage == teamCreationPage) {
     //For now, when CREATE TEAM button is clicked, go back to last page
-    if (createTeamButton.click(mouseX, mouseY)) {
-      currentPage = lastPage;
+    if (createTeamButton.click(new Coord(mouseX, mouseY))) {
+      currentPage = pageHistory.removeTail();
+      //Don't process any more mouse actions this frame
+      return;
     }
   }
   
   //Pokemon Creation Page Buttons
   if (currentPage == pokemonCreationPage) {
     //For now, when CREATE POKEMON button is clicked, go back to last page
-    if (createPokemonButton.click(mouseX, mouseY)) {
-      currentPage = lastPage;
+    if (createPokemonButton.click(new Coord(mouseX, mouseY))) {
+      currentPage = pageHistory.removeTail();
+      //Don't process any more mouse actions this frame
+      return;
     }
   }
 }
@@ -267,8 +386,8 @@ public void draw() {
   //Hover over Menu and Page buttons
   for (int m=0; currentPage.getMenu(m) != null; m++) {
     for (int b=0; currentPage.getMenu(m).getButton(b) != null; b++) {
-      currentPage.getMenu(m).getButton(b).hover(mouseX, mouseY);
+      currentPage.getMenu(m).getButton(b).hover(new Coord(mouseX, mouseY));
     }
   }
-  for (int b=0; currentPage.getButton(b) != null; b++) currentPage.getButton(b).hover(mouseX, mouseY);
+  for (int b=0; currentPage.getButton(b) != null; b++) currentPage.getButton(b).hover(new Coord(mouseX, mouseY));
 }

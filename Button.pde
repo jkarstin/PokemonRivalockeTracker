@@ -4,9 +4,30 @@
  */
 
 public class Button extends Label {
+  private boolean mDisabled;
+  private color mDisabledColor;
+  private color mEnabledColor;
   
   public Button(Coord position, Coord size, String text) {
     super(position, size, text);
+    mDisabled = false;
+    mDisabledColor = color(100);
+    mEnabledColor  = color(255);
+    mFillColor = mEnabledColor;
+  }
+  
+  public boolean isDisabled() {
+    return mDisabled;
+  }
+  
+  public void enable() {
+    mDisabled = false;
+    mFillColor = mEnabledColor;
+  }
+  
+  public void disable() {
+    mDisabled = true;
+    mFillColor = mDisabledColor;
   }
   
   public void hover(Coord position) {
@@ -14,16 +35,9 @@ public class Button extends Label {
     else mFillColor = color(255);
   }
   
-  public void hover(float x, float y) {
-    this.hover(new Coord(x, y));
-  }
-  
   public boolean click(Coord position) {
-    return contains(position);
-  }
-  
-  public boolean click(float x, float y) {
-    return click(new Coord(x, y));
+    if (!mDisabled) return contains(position);
+    return false;
   }
   
   private boolean contains(Coord position) {

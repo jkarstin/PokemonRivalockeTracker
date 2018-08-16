@@ -42,6 +42,7 @@ public class Collection<E extends Tile> {
   
   public void addElement(E element) {
     if (mMax > 0 && mCount >= mMax) return;
+    if (element == null) return;
     if (mCount >= mSpace) grow();
     mElements[mCount++] = element;
   }
@@ -51,8 +52,12 @@ public class Collection<E extends Tile> {
   }
   
   public E getElement(int index) {
-    if (index < mCount) return (E)mElements[index];
+    if (index >= 0 && index < mCount) return (E)mElements[index];
     return null;
+  }
+  
+  public E getTail() {
+    return this.getElement(mCount-1);
   }
   
   public E removeElement(int index) {
@@ -70,6 +75,10 @@ public class Collection<E extends Tile> {
       mCount--;
     }
     return element;
+  }
+  
+  public E removeTail() {
+    return removeElement(mCount-1);
   }
   
   private void grow() {

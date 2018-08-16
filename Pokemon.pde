@@ -5,12 +5,12 @@
  */
 
 public class Pokemon extends Page {
-  private String mType;
+  private PokeData.Type mType;
   private String mBreed;
-  private String mGender;
+  private PokeData.Gender mGender;
   private int mLevel;
   
-  public Pokemon(String name, String breed, String type, String gender, int level) {
+  public Pokemon(String name, String breed, PokeData.Type type, PokeData.Gender gender, int level) {
     super(name);
     mBreed = breed;
     mType = type;
@@ -32,15 +32,15 @@ public class Pokemon extends Page {
     mBreed = newBreed;
   }
   
-  public String type() {
+  public PokeData.Type type() {
     return mType;
   }
   
-  public void changeType(String newType) {
+  public void changeType(PokeData.Type newType) {
     mType = newType;
   }
   
-  public String gender() {
+  public PokeData.Gender gender() {
     return mGender;
   }
   
