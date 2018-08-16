@@ -24,12 +24,10 @@ Menu teamCreationMenu;
 Menu pokemonCreationMenu;
 Label spotlightWelcomeLabel;
 Label namingPageNameLabel;
-Label teamsWelcomeLabel;
 Label levelNumberLabel;
 Button createPlayerButton;
 Button createTeamButton;
 Button createPokemonButton;
-Button chooseTypeButton;
 Button setLevelButton;
 Button normalTypeButton;
 Button fightTypeButton;
@@ -59,14 +57,14 @@ Page pokemonCreationPage;
 Page typeSelectionPage;
 Page genderSelectionPage;
 Page levelNumberPage;
-Page teamsPage;
 Page namingPage;
 Page currentPage;
 
 //Declare system variables
 String nameData;
-int nameDataCharCount;
-String          playerName;
+int    nameDataCharCount;
+String playerName;
+Team   playerTeam;
 String          pokemonName;
 PokeData.Breed  pokemonBreed;
 PokeData.Type   pokemonType;
@@ -90,7 +88,6 @@ public void setup() {
   pokemonCreationPage = new Page("+ ADD A POKEMON");
   typeSelectionPage   = new Page("CHOOSE A TYPE");
   levelNumberPage     = new Page("SET THEIR LEVEL");
-  teamsPage           = new Page("TEAMS");
   namingPage          = new Page("CREATE A NAME");
   
   //Intialize Tile variables
@@ -101,13 +98,11 @@ public void setup() {
   pokemonCreationMenu = new Menu(new Coord(80, 80), new Coord(width-260, height-160));
   spotlightWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
   namingPageNameLabel   = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
-  teamsWelcomeLabel     = new Label(new Coord(20, 20), new Coord(350, 30), "Future TEAMS Page, coming soon!");
   levelNumberLabel      = new Label(new Coord(20, 20), new Coord(350, 30), "LEVEL: ");
   createPlayerButton  = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE PLAYER");
   createTeamButton    = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE TEAM");
   createPokemonButton = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CREATE POKEMON");
   setLevelButton      = new Button(new Coord(90, height-130), new Coord(width-280, 40), "SET LEVEL");
-  chooseTypeButton    = new Button(new Coord(90, height-130), new Coord(width-280, 40), "CHOOSE TYPE");
   normalTypeButton = new Button(new Coord( 40,  40), new Coord(70, 30), "NORMAL");
   fightTypeButton  = new Button(new Coord(120,  40), new Coord(70, 30), "FIGHT" );
   flyingTypeButton = new Button(new Coord(200,  40), new Coord(70, 30), "FLYING");
@@ -159,7 +154,6 @@ public void setup() {
   typeSelectionPage.addButton(dragonTypeButton);
   typeSelectionPage.addButton(  darkTypeButton);
   typeSelectionPage.addButton( fairyTypeButton);
-  typeSelectionPage.addButton(chooseTypeButton);
   levelNumberPage.addTile(levelNumberLabel);
   levelNumberPage.addButton(new Button(new Coord( 80, 180), new Coord(30, 30), "0"));
   levelNumberPage.addButton(new Button(new Coord( 40, 140), new Coord(30, 30), "1"));
@@ -174,8 +168,6 @@ public void setup() {
   levelNumberPage.addButton(setLevelButton);
   levelNumberPage.addMenu(mainMenu);
   typeSelectionPage.addMenu(mainMenu);
-  teamsPage.addTile(teamsWelcomeLabel);
-  teamsPage.addMenu(mainMenu);
   namingPage.addTile(namingPageNameLabel);
   namingPage.addButton(new Button(new Coord( 20,  60), new Coord(30, 30), "A"));
   namingPage.addButton(new Button(new Coord( 60,  60), new Coord(30, 30), "B"));
@@ -217,7 +209,6 @@ public void setup() {
   //Populate menus
   mainMenu.addPage(spotlightPage);
   mainMenu.addPage(playersPage);
-  mainMenu.addPage(teamsPage); //Not yet useful
   playerMenu.addPage(playerCreationPage);
   playerCreationMenu.addPage(namingPage);
   playerCreationMenu.addPage(teamCreationPage);
@@ -227,9 +218,10 @@ public void setup() {
   pokemonCreationMenu.addPage(levelNumberPage);
   
   //Initialize system variables
-  nameData = "";
+  nameData          = "";
   nameDataCharCount = 0;
-  playerName    = "";
+  playerName = "";
+  playerTeam = null;
   pokemonName   = "";
   pokemonBreed  = PokeData.Breed.NONE;
   pokemonType   = PokeData.Type.NORMAL;
@@ -285,10 +277,20 @@ public void mouseClicked() {
           //If we entered namingPage from playerCreationPage, nameData will be the new Player's name
           if (pageHistory.getTail() == playerCreationPage) {
             playerName = nameData;
+            //Reset nameData
+            nameData = "";
+            nameDataCharCount = 0;
+            //Update namingPageNameLabel
+            namingPageNameLabel.setText("NAME: " + nameData);
           }
           //If we entered namingPage from pokemonCreationPage, nameData will be the new Pokemon's name
           if (pageHistory.getTail() == pokemonCreationPage) {
             pokemonName = nameData;
+            //Reset nameData
+            nameData = "";
+            nameDataCharCount = 0;
+            //Update namingPageNameLabel
+            namingPageNameLabel.setText("NAME: " + nameData);
           }
           
           //Go back to last page
@@ -319,11 +321,33 @@ public void mouseClicked() {
   
   //Pokemon Type Selection Page Buttons
   if (currentPage == typeSelectionPage) {
-    //For now, when CHOOSE TYPE button is clicked, go back to last page
-    if (chooseTypeButton.click(new Coord(mouseX, mouseY))) {
-      currentPage = pageHistory.removeTail();
-      //Don't process any more mouse actions this frame
-      return;
+    for (int b=0; currentPage.getButton(b) != null; b++) {
+      currentButton = currentPage.getButton(b);
+      if (currentButton.click(new Coord(mouseX, mouseY))) {
+        if (currentButton == normalTypeButton)      pokemonType = PokeData.Type.NORMAL;
+        else if (currentButton == fightTypeButton)  pokemonType = PokeData.Type.FIGHT;
+        else if (currentButton == flyingTypeButton) pokemonType = PokeData.Type.FLYING;
+        else if (currentButton == poisonTypeButton) pokemonType = PokeData.Type.POISON;
+        else if (currentButton == groundTypeButton) pokemonType = PokeData.Type.GROUND;
+        else if (currentButton == rockTypeButton)   pokemonType = PokeData.Type.ROCK;
+        else if (currentButton == bugTypeButton)    pokemonType = PokeData.Type.BUG;
+        else if (currentButton == ghostTypeButton)  pokemonType = PokeData.Type.GHOST;
+        else if (currentButton == steelTypeButton)  pokemonType = PokeData.Type.STEEL;
+        else if (currentButton == fireTypeButton)   pokemonType = PokeData.Type.FIRE;
+        else if (currentButton == waterTypeButton)  pokemonType = PokeData.Type.WATER;
+        else if (currentButton == grassTypeButton)  pokemonType = PokeData.Type.GRASS;
+        else if (currentButton == electrTypeButton) pokemonType = PokeData.Type.ELECTR;
+        else if (currentButton == psychcTypeButton) pokemonType = PokeData.Type.PSYCHC;
+        else if (currentButton == iceTypeButton)    pokemonType = PokeData.Type.ICE;
+        else if (currentButton == dragonTypeButton) pokemonType = PokeData.Type.DRAGON;
+        else if (currentButton == darkTypeButton)   pokemonType = PokeData.Type.DARK;
+        else if (currentButton == fairyTypeButton)  pokemonType = PokeData.Type.FAIRY;
+        //Once type is selected, automatically move back to last page
+        //Go back to previous page
+        currentPage = pageHistory.removeTail();
+        //Don't process any more mouse actions this frame
+        return;
+      }
     }
   }
   
@@ -331,9 +355,14 @@ public void mouseClicked() {
   if (currentPage == playerCreationPage) {
     //If CREATE PLAYER button is clicked, make new Player using nameData
     if (createPlayerButton.click(new Coord(mouseX, mouseY))) {
-      currentPage = pageHistory.removeTail();
       //Create a new player using nameData
       Player p = new Player(playerName);
+      //Rename playerTeam with playerName value; create a new empty team if one hasn't been created yet
+      if (playerTeam == null) playerTeam = new Team(playerName + "'S TEAM");
+      else playerTeam.rename(playerName + "'S TEAM");
+      //Set player's team as playerTeam variable
+      p.setTeam(playerTeam);
+      //Add the main menu to player's profile page
       p.addMenu(mainMenu);
       //Add player to players collection
       players.addElement(p);
@@ -342,13 +371,23 @@ public void mouseClicked() {
       Page creationPage = playerMenu.removePage(playerMenu.pageCount()-1);
       //Add new player as page to playerMenu
       playerMenu.addPage(p);
+      //Relabel page's corresponding button to be more user friendly
+      playerMenu.getButton(playerMenu.pageCount()-1).setText(playerName + "'S PROFILE");
       //Put last page back on the end of the playerMenu page collection
       playerMenu.addPage(creationPage);
-      //Reset nameData
-      nameData = "";
-      nameDataCharCount = 0;
-      //Update namingPageNameLabel
-      namingPageNameLabel.setText("NAME: " + nameData);
+      //Clear out all pokemon from teamCreationMenu; this also clears pokemonCreationPage
+      teamCreationMenu.wipe();
+      //Add back the pokemonCreationPage to the teamCreationMenu
+      teamCreationMenu.addPage(pokemonCreationPage);
+      
+      println(p.name());
+      println(p.team().name());
+      for (int i=0; p.team().getPokemon(i) != null; i++) {
+        print(p.team().getPokemon(i).summary());
+      }
+      
+      //Go back to previous page
+      currentPage = pageHistory.removeTail();
       //Don't process any more mouse actions this frame
       return;
     }
@@ -358,6 +397,10 @@ public void mouseClicked() {
   if (currentPage == teamCreationPage) {
     //For now, when CREATE TEAM button is clicked, go back to last page
     if (createTeamButton.click(new Coord(mouseX, mouseY))) {
+      playerTeam = new Team("");
+      for (int p=0; p < teamCreationMenu.pageCount()-1; p++) {
+        playerTeam.addPokemon((Pokemon)teamCreationMenu.getPage(p));
+      }
       currentPage = pageHistory.removeTail();
       //Don't process any more mouse actions this frame
       return;
@@ -366,8 +409,22 @@ public void mouseClicked() {
   
   //Pokemon Creation Page Buttons
   if (currentPage == pokemonCreationPage) {
-    //For now, when CREATE POKEMON button is clicked, go back to last page
+    //CREATE POKEMON Button
     if (createPokemonButton.click(new Coord(mouseX, mouseY))) {
+      Pokemon p = new Pokemon(pokemonName, pokemonBreed, pokemonType, pokemonGender, pokemonLevel);
+      p.addMenu(mainMenu);
+      Page creationPage = teamCreationMenu.removePage(teamCreationMenu.pageCount()-1);
+      teamCreationMenu.addPage(p);
+      teamCreationMenu.addPage(creationPage);
+      nameData = "";
+      nameDataCharCount = 0;
+      namingPageNameLabel.setText("NAME: " + nameData);
+      pokemonName   = "";
+      pokemonBreed  = PokeData.Breed.NONE;
+      pokemonType   = PokeData.Type.NORMAL;
+      pokemonGender = PokeData.Gender.FEMALE;
+      pokemonLevel  = 0;
+      //Go back to previous page
       currentPage = pageHistory.removeTail();
       //Don't process any more mouse actions this frame
       return;

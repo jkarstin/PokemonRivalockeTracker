@@ -22,6 +22,10 @@ public class Page extends Tile {
     mName = name;
   }
   
+  public void rename(String name) {
+    mName = name;
+  }
+  
   public String name() {
     return mName;
   }

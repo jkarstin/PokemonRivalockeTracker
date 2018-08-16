@@ -17,18 +17,12 @@ public class Collection<E extends Tile> {
   private int mMax;
   
   public Collection() {
-    mSpace = 1;
-    mElements = new Tile[mSpace];
-    mElements[0] = null;
-    mCount = 0;
+    this.wipe();
     mMax = 0; //If mMax is set to zero, then no maximum exists
   }
   
   public Collection(int max) {
-    mSpace = 1;
-    mElements = new Tile[mSpace];
-    mElements[0] = null;
-    mCount = 0;
+    this.wipe();
     mMax = max;
   }
   
@@ -47,9 +41,9 @@ public class Collection<E extends Tile> {
     mElements[mCount++] = element;
   }
   
-  public void pushElement(E element) {
-    //Place new element as index 0, and shift all others up one index
-  }
+  //public void pushElement(E element) {
+  //  //Place new element as index 0, and shift all others up one index
+  //}
   
   public E getElement(int index) {
     if (index >= 0 && index < mCount) return (E)mElements[index];
@@ -79,6 +73,13 @@ public class Collection<E extends Tile> {
   
   public E removeTail() {
     return removeElement(mCount-1);
+  }
+  
+  public void wipe() {
+    mSpace = 1;
+    mElements = new Tile[mSpace];
+    mElements[0] = null;
+    mCount = 0;
   }
   
   private void grow() {

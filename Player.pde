@@ -8,10 +8,14 @@ public class Player extends Page {
   private Team mTeam;
   
   public Player(String name) {
-    super(name + "'S PROFILE");
+    super(name);
     mTeam = new Team(name + "'S TEAM");
     Label profileLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future " + name + "'s PROFILE Page, coming soon!");
     this.addTile(profileLabel);
+  }
+  
+  public void setTeam(Team team) {
+    mTeam = team;
   }
   
   public Team team() {

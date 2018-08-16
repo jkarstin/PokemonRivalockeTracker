@@ -5,18 +5,18 @@
  */
 
 public class Pokemon extends Page {
-  private PokeData.Type mType;
-  private String mBreed;
+  private PokeData.Type   mType;
+  private PokeData.Breed  mBreed;
   private PokeData.Gender mGender;
   private int mLevel;
   
-  public Pokemon(String name, String breed, PokeData.Type type, PokeData.Gender gender, int level) {
+  public Pokemon(String name, PokeData.Breed breed, PokeData.Type type, PokeData.Gender gender, int level) {
     super(name);
     mBreed = breed;
     mType = type;
     mGender = gender;
     mLevel = level;
-    Label profileLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future " + name + "'s PROFILE Page, coming soon!");
+    Label profileLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future " + name + "'s POKEMON PROFILE Page, coming soon!");
     this.addTile(profileLabel);
   }
   
@@ -24,11 +24,11 @@ public class Pokemon extends Page {
     mName = newName;
   }
   
-  public String breed() {
+  public PokeData.Breed breed() {
     return mBreed;
   }
   
-  public void changeBreed(String newBreed) {
+  public void changeBreed(PokeData.Breed newBreed) {
     mBreed = newBreed;
   }
   
@@ -50,5 +50,17 @@ public class Pokemon extends Page {
   
   public void changeLevel(int newLevel) {
     mLevel = newLevel;
+  }
+  
+  public String summary() {
+    String output = "";
+    
+    output += "NAME:   " + mName + "\n";
+    output += "BREED:  " + mBreed + "\n";
+    output += "TYPE:   " + mType + "\n";
+    output += "GENDER: " + mGender + "\n";
+    output += "LEVEL:  " + mLevel + "\n";
+    
+    return output;
   }
 };
