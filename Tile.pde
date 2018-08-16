@@ -9,7 +9,7 @@
  * 
  * To call this class's constructor from a child's constructor, use the built-in method super().
  * 
- * J Karstin Neill    08.12.18
+ * J Karstin Neill    08.16.18
  */
 
 public class Tile {

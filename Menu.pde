@@ -2,7 +2,7 @@
  * 
  * A tile child designed to link buttons to pages to make page selection interactive.
  * 
- * J Karstin Neill    08.13.18
+ * J Karstin Neill    08.16.18
  */
 
 public class Menu extends Tile {

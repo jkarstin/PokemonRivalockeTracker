@@ -7,21 +7,34 @@
  * 
  * See code for more detailed commenting on execution process.
  * 
- * J Karstin Neill    08.13.18
+ * J Karstin Neill    08.16.18
  */
 
-//Declare Players
-Collection<Player> players; //Currently unused; here as a placeholder if needed in the future
+//Declare Pages
+Page spotlightPage;
+Page playersPage;
+Page gymsPage;
+Page playerCreationPage;
+Page teamCreationPage;
+Page pokemonCreationPage;
+Page breedSelectionPage;
+Page typeSelectionPage;
+Page genderSelectionPage;
+Page levelNumberPage;
+Page gymCreationPage;
+Page namingPage;
 
 //Declare Tiles
 Menu mainMenu;
 Menu playerMenu;
+Menu gymMenu;
 Menu playerCreationMenu;
 Menu teamCreationMenu;
 Menu pokemonCreationMenu;
 Label spotlightWelcomeLabel;
 Label namingPageNameLabel;
 Label levelNumberLabel;
+Label gymCreationWelcomeLabel;
 Button createPlayerButton;
 Button createTeamButton;
 Button createPokemonButton;
@@ -48,18 +61,6 @@ Button femaleButton;
 Button maleButton;
 Button backButton;
 
-//Declare Pages
-Page spotlightPage;
-Page playersPage;
-Page playerCreationPage;
-Page teamCreationPage;
-Page pokemonCreationPage;
-Page breedSelectionPage;
-Page typeSelectionPage;
-Page genderSelectionPage;
-Page levelNumberPage;
-Page namingPage;
-
 //Declare system variables
 String nameData;
 int    nameDataCharCount;
@@ -72,6 +73,7 @@ PokeData.Gender pokemonGender;
 int             pokemonLevel;
 Collection<Page> pageHistory;
 Page currentPage;
+Collection<Player> players; //Currently unused; here as a placeholder if needed in the future
 
 //Runs once at the beginning of the application
 //Similar to the "int main()" function in C++ programs
@@ -84,6 +86,7 @@ public void setup() {
   //Initialize Page variables
   spotlightPage       = new Page("SPOTLIGHT");
   playersPage         = new Page("PLAYERS");
+  gymsPage            = new Page("GYMS");
   playerCreationPage  = new Page("+ ADD A PLAYER");
   teamCreationPage    = new Page("BUILD A TEAM");
   pokemonCreationPage = new Page("+ ADD A POKEMON");
@@ -91,17 +94,20 @@ public void setup() {
   typeSelectionPage   = new Page("CHOOSE A TYPE");
   genderSelectionPage = new Page("CHOOSE A GENDER");
   levelNumberPage     = new Page("SET THEIR LEVEL");
+  gymCreationPage     = new Page("+ ADD A GYM");
   namingPage          = new Page("CREATE A NAME");
   
   //Intialize Tile variables
   mainMenu            = new Menu(new Coord(width-100,  10), new Coord(      100,        310));
   playerMenu          = new Menu(new Coord(       80,  80), new Coord(width-260, height-160));
+  gymMenu             = new Menu(new Coord(       80,  80), new Coord(width-260, height-160));
   playerCreationMenu  = new Menu(new Coord(       80, 100), new Coord(width-260,        160));
   teamCreationMenu    = new Menu(new Coord(       80,  20), new Coord(width-260,        360));
   pokemonCreationMenu = new Menu(new Coord(       80,  40), new Coord(width-260,        310));
-  spotlightWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
-  namingPageNameLabel   = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
-  levelNumberLabel      = new Label(new Coord(20, 20), new Coord(350, 30), "LEVEL: ");
+  spotlightWelcomeLabel   = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
+  namingPageNameLabel     = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
+  levelNumberLabel        = new Label(new Coord(20, 20), new Coord(350, 30), "LEVEL: ");
+  gymCreationWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future GYM CREATION Page, coming soon!");
   createPlayerButton  = new Button(new Coord( 90, 210), new Coord(width-280, 40), "CREATE PLAYER");
   createTeamButton    = new Button(new Coord (90, 330), new Coord(width-280, 40), "CREATE TEAM");
   createPokemonButton = new Button(new Coord( 90, 300), new Coord(width-280, 40), "CREATE POKEMON");
@@ -133,6 +139,8 @@ public void setup() {
   spotlightPage.addMenu(mainMenu);
   playersPage.addMenu(playerMenu);
   playersPage.addMenu(mainMenu);
+  gymsPage.addMenu(gymMenu);
+  gymsPage.addMenu(mainMenu);
   playerCreationPage.addMenu(playerCreationMenu);
   playerCreationPage.addButton(createPlayerButton);
   playerCreationPage.addButton(backButton);
@@ -178,6 +186,8 @@ public void setup() {
   levelNumberPage.addButton(new Button(new Coord(120,  60), new Coord(30, 30), "9"));
   levelNumberPage.addButton(setLevelButton);
   levelNumberPage.addButton(backButton);
+  gymCreationPage.addTile(gymCreationWelcomeLabel);
+  gymCreationPage.addButton(backButton);
   namingPage.addTile(namingPageNameLabel);
   namingPage.addButton(new Button(new Coord( 20,  60), new Coord(30, 30), "A"));
   namingPage.addButton(new Button(new Coord( 60,  60), new Coord(30, 30), "B"));
@@ -213,7 +223,9 @@ public void setup() {
   //Populate menus
   mainMenu.addPage(spotlightPage);
   mainMenu.addPage(playersPage);
+  mainMenu.addPage(gymsPage);
   playerMenu.addPage(playerCreationPage);
+  gymMenu.addPage(gymCreationPage);
   playerCreationMenu.addPage(namingPage);
   playerCreationMenu.addPage(teamCreationPage);
   teamCreationMenu.addPage(pokemonCreationPage);
@@ -224,15 +236,8 @@ public void setup() {
   pokemonCreationMenu.addPage(levelNumberPage);
   
   //Initialize system variables
-  nameData          = "";
-  nameDataCharCount = 0;
-  playerName = "";
-  playerTeam = null;
-  pokemonName   = "";
-  pokemonBreed  = PokeData.Breed.NONE;
-  pokemonType   = PokeData.Type.NORMAL;
-  pokemonGender = PokeData.Gender.FEMALE;
-  pokemonLevel  = 1;
+  resetNameData();
+  resetPokemonData();
   pageHistory = new Collection<Page>();
   currentPage = spotlightPage;
   
@@ -346,13 +351,10 @@ public void mouseClicked() {
       teamCreationMenu.addPage(p);
       //Put last page back on the end of the teamCreationMenu page collection
       teamCreationMenu.addPage(creationPage);
+      //Reset nameData
       resetNameData();
       //Reset pokemon data
-      pokemonName   = "";
-      pokemonBreed  = PokeData.Breed.NONE;
-      pokemonType   = PokeData.Type.NORMAL;
-      pokemonGender = PokeData.Gender.FEMALE;
-      pokemonLevel  = 1;
+      resetPokemonData();
       //Go back to previous page
       currentPage = pageHistory.removeTail();
       //Don't process any more mouse actions this frame
@@ -494,4 +496,12 @@ private void resetNameData() {
   nameDataCharCount = 0;
   //Update namingPageNameLabel
   namingPageNameLabel.setText("NAME: " + nameData);
+}
+
+private void resetPokemonData() {
+  pokemonName   = "";
+  pokemonBreed  = PokeData.Breed.NONE;
+  pokemonType   = PokeData.Type.NORMAL;
+  pokemonGender = PokeData.Gender.FEMALE;
+  pokemonLevel  = 1;
 }

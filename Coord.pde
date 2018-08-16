@@ -3,7 +3,7 @@
  * The skeletal system of the entire program. A(n) (ideally) comprehensive base
  * structure to allow all program components to communicate and manipulate location and dimension.
  * 
- * J Karstin Neill    08.11.18
+ * J Karstin Neill    08.16.18
  */
 
 public class Coord {

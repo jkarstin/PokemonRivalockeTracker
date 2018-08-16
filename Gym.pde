@@ -1,7 +1,7 @@
 /* Gym.pde
  * 
  * 
- * J Karstin Neill    08.11.18
+ * J Karstin Neill    08.16.18
  */
  
 public class Gym extends Page {
@@ -12,6 +12,8 @@ public class Gym extends Page {
   public Gym(String name) {
     super(name);
     mPlayers = new Collection<Player>(MAXPLAYERS);
+    Label profileLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future " + name + "'s GYM PROFILE Page, coming soon!");
+    this.addTile(profileLabel);
   }
   
   public void addPlayer(Player player) {

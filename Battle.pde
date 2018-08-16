@@ -5,7 +5,7 @@
  * Any future updates to Players involved in the battle will not be
  * reflected in the battle's info, unless it is manually changed.
  * 
- * J Karstin Neill    08.11.18
+ * J Karstin Neill    08.16.18
  */
 
 //Class defintion

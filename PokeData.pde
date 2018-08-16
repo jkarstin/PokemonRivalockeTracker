@@ -1,3 +1,11 @@
+/* PokeData
+ * 
+ * This is an interesting class.
+ * Its sole purpose is to provide a custom grouping of enum "types" for Pokemon attributes.
+ * 
+ * J Karstin Neill    08.16.18
+ */
+
 public static class PokeData {
   public static enum Breed {
     NONE

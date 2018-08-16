@@ -1,7 +1,7 @@
 /* Pokemon.pde
  * 
  * 
- * J Karstin Neill    08.11.18
+ * J Karstin Neill    08.16.18
  */
 
 public class Pokemon extends Page {

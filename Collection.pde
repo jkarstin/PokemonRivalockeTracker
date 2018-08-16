@@ -7,7 +7,7 @@
  * The mElement array is thus populated by Tile objects,
  * and adding/getting uses typecasting to type T to give an outward generic type usage.
  * 
- * J Karstin Neill    08.13.18
+ * J Karstin Neill    08.16.18
  */
 
 public class Collection<E extends Tile> {
