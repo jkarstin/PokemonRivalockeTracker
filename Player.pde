@@ -30,4 +30,13 @@ public class Player extends Page {
     }
     return copy;
   }
+  
+  public String summary() {
+    String output = "";
+    
+    output += "PLAYER NAME: " + mName + "\n";
+    output += mTeam.summary();
+    
+    return output;
+  }
 };

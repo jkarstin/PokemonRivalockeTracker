@@ -21,4 +21,14 @@ public class Team extends Page {
   public Pokemon getPokemon(int index) {
     return mPokemon.getElement(index);
   }
+  
+  public String summary() {
+    String output = "";
+    
+    output += "TEAM NAME: " + mName + "\n";
+    for (int p=0; mPokemon.getElement(p) != null; p++)
+      output += mPokemon.getElement(p).summary();
+    
+    return output;
+  }
 };

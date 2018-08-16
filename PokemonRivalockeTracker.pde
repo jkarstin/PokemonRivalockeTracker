@@ -7,9 +7,6 @@
  * 
  * See code for more detailed commenting on execution process.
  * 
- * TODO: May need to add a nameQueue to keep track of all of the name strings used in order to make the objects.
- * Need better management of lastPage variable. Not keeping track well enough. Perhaps have a collection of pages passed in order.
- * 
  * J Karstin Neill    08.13.18
  */
 
@@ -200,12 +197,6 @@ public void setup() {
   namingPage.addButton(new Button(new Coord( 20, 340), new Coord(60, 30), "SPACE"));
   namingPage.addMenu(mainMenu);
   
-  //Set starting value of currentPage
-  currentPage = spotlightPage;
-  
-  //Initialize players collection
-  players = new Collection<Player>();
-  
   //Populate menus
   mainMenu.addPage(spotlightPage);
   mainMenu.addPage(playersPage);
@@ -226,8 +217,14 @@ public void setup() {
   pokemonBreed  = PokeData.Breed.NONE;
   pokemonType   = PokeData.Type.NORMAL;
   pokemonGender = PokeData.Gender.FEMALE;
-  pokemonLevel  = 0;
+  pokemonLevel  = 1;
   pageHistory = new Collection<Page>();
+  
+  //Set starting value of currentPage
+  currentPage = spotlightPage;
+  
+  //Initialize players collection
+  players = new Collection<Player>();
 }
 
 //Called once each time a mouse button is pressed down and then released
@@ -380,11 +377,8 @@ public void mouseClicked() {
       //Add back the pokemonCreationPage to the teamCreationMenu
       teamCreationMenu.addPage(pokemonCreationPage);
       
-      println(p.name());
-      println(p.team().name());
-      for (int i=0; p.team().getPokemon(i) != null; i++) {
-        print(p.team().getPokemon(i).summary());
-      }
+      //DEBUG: Show player and summary of player's team
+      println(p.summary());
       
       //Go back to previous page
       currentPage = pageHistory.removeTail();
@@ -395,12 +389,14 @@ public void mouseClicked() {
   
   //Team Creation Page Buttons
   if (currentPage == teamCreationPage) {
-    //For now, when CREATE TEAM button is clicked, go back to last page
+    //CREATE TEAM Button
     if (createTeamButton.click(new Coord(mouseX, mouseY))) {
+      //Make a new Team with an empty name
       playerTeam = new Team("");
-      for (int p=0; p < teamCreationMenu.pageCount()-1; p++) {
+      //Populate playerTeam with pokemon from teamCreationMenu (stored as Pages, so cast as Pokemon)
+      for (int p=0; p < teamCreationMenu.pageCount()-1; p++)
         playerTeam.addPokemon((Pokemon)teamCreationMenu.getPage(p));
-      }
+      //Go back to previous page
       currentPage = pageHistory.removeTail();
       //Don't process any more mouse actions this frame
       return;
@@ -411,19 +407,28 @@ public void mouseClicked() {
   if (currentPage == pokemonCreationPage) {
     //CREATE POKEMON Button
     if (createPokemonButton.click(new Coord(mouseX, mouseY))) {
+      //Create new pokemon with stored data
       Pokemon p = new Pokemon(pokemonName, pokemonBreed, pokemonType, pokemonGender, pokemonLevel);
+      //Add mainMenu to pokemon's profile page
       p.addMenu(mainMenu);
+      //Add pokemon to teamCreationMenu
+      //Remove and temporarily save last page in teamCreationMenu (always pokemonCreationPage)
       Page creationPage = teamCreationMenu.removePage(teamCreationMenu.pageCount()-1);
+      //Add new pokemon as page to teamCreationMenu
       teamCreationMenu.addPage(p);
+      //Put last page back on the end of the teamCreationMenu page collection
       teamCreationMenu.addPage(creationPage);
+      //Reset nameData
       nameData = "";
       nameDataCharCount = 0;
+      //Update namingPageNameLabel
       namingPageNameLabel.setText("NAME: " + nameData);
+      //Reset pokemon data
       pokemonName   = "";
       pokemonBreed  = PokeData.Breed.NONE;
       pokemonType   = PokeData.Type.NORMAL;
       pokemonGender = PokeData.Gender.FEMALE;
-      pokemonLevel  = 0;
+      pokemonLevel  = 1;
       //Go back to previous page
       currentPage = pageHistory.removeTail();
       //Don't process any more mouse actions this frame
