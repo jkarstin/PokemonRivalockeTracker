@@ -74,10 +74,10 @@ public class Coord {
   }
   
   //Used when this Coord defines the maximum dimensions of a given grid in number of cells width, and height
-  //Used to find the "physical" location within this grid using given cell size Coord for corresponding element at given index within a linear array-type structure
+  //Used to find the position within this grid using given index within a linear array-type structure
   //Fills row first before moving to next column: (0,0), (1,0), (2,0), ..., (w-1, h-1), (w, h-1), (0, h), ..., (w-2, h), (w-1, h), (w, h)
-  public Coord gridPosition(Coord cellSize, int index) {
-    return cellSize.dualMultiply(new Coord(index%(int)mX, index/(int)mX));
+  public Coord gridPosition(int index) {
+    return new Coord(index%(int)mX, index/(int)mX);
   }
   
   public float area() {

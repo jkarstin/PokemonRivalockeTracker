@@ -6,22 +6,17 @@
  */
 
 public class Menu extends Keypad {
-  private Collection<Page>   mPages;
+  private Collection<Page> mPages;
   
   public Menu(Coord position, Coord buttonSize, int maxPages) {
     super(position, new Coord(1, maxPages), buttonSize, new Coord(10, 10));
-    mPages   = new Collection<Page>(maxPages);
+    mPages = new Collection<Page>(maxPages);
   }
   
   //Create a button for the page, and add the page and its corresponding button to the collections
   public void addPage(Page page) {
     this.addButton(page.name());
     mPages.addElement(page);
-  }
-  
-  public void move(Coord delta) {
-    super.move(delta);
-    for (int b=0; mButtons.getElement(b) != null; b++) mButtons.getElement(b).move(delta);
   }
   
   public Page getPage(int index) {
