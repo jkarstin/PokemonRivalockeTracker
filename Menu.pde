@@ -1,36 +1,27 @@
 /* Menu.pde
  * 
- * A tile child designed to link buttons to pages to make page selection interactive.
+ * A keypad child designed to link buttons to pages to make page selection interactive.
  * 
  * J Karstin Neill    08.16.18
  */
 
-public class Menu extends Tile {
-  private final static int MAXPAGES = 6;
-  private Collection<Button> mButtons;
+public class Menu extends Keypad {
   private Collection<Page>   mPages;
   
-  public Menu(Coord position, Coord size) {
-    super(position, size);
-    mFillColor = color(127);
-    mButtons = new Collection<Button>(MAXPAGES);
-    mPages   = new Collection<Page>(MAXPAGES);
+  public Menu(Coord position, Coord buttonSize, int maxPages) {
+    super(position, new Coord(1, maxPages), buttonSize, new Coord(10, 10));
+    mPages   = new Collection<Page>(maxPages);
   }
   
   //Create a button for the page, and add the page and its corresponding button to the collections
   public void addPage(Page page) {
-    int currentPageIndex = mPages.count();
-    mButtons.addElement(new Button(new Coord(mPos.x()+10, mPos.y()+10+50*currentPageIndex), new Coord(mSize.x()-20, 40), page.name()));
+    this.addButton(page.name());
     mPages.addElement(page);
   }
   
   public void move(Coord delta) {
     super.move(delta);
     for (int b=0; mButtons.getElement(b) != null; b++) mButtons.getElement(b).move(delta);
-  }
-  
-  public Button getButton(int index) {
-    return mButtons.getElement(index);
   }
   
   public Page getPage(int index) {
@@ -49,12 +40,5 @@ public class Menu extends Tile {
   
   public int pageCount() {
     return mPages.count();
-  }
-  
-  public void show() {
-    super.show();
-    for (int b=0; mButtons.getElement(b) != null; b++) {
-      mButtons.getElement(b).show();
-    }
   }
 };

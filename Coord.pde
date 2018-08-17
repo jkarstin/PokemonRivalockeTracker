@@ -55,13 +55,33 @@ public class Coord {
   
   public void plusEq(Coord other) {
     if (other != null) {
-      this.mX += other.x();
-      this.mY += other.y();
+      mX += other.x();
+      mY += other.y();
     }
   }
   
   public Coord times(float mult) {
-    return new Coord(this.mX*mult, this.mY*mult);
+    return new Coord(mX*mult, mY*mult);
+  }
+  
+  //This is a very weird, but useful method
+  //It will multiply the x components and y components of each coord together separately
+  //Essentially, creates the Coord: (this.x * other.x, this.y * other.y)
+  //Main use is in pairing with gridPosition() to accurately place the new Coord at a position within a grid,
+  //as determined by the grid's cell size Coord, and the index of the Coords associated element in a linear array-type structure
+  public Coord dualMultiply(Coord other) {
+    return new Coord(mX*other.x(), mY*other.y());
+  }
+  
+  //Used when this Coord defines the maximum dimensions of a given grid in number of cells width, and height
+  //Used to find the "physical" location within this grid using given cell size Coord for corresponding element at given index within a linear array-type structure
+  //Fills row first before moving to next column: (0,0), (1,0), (2,0), ..., (w-1, h-1), (w, h-1), (0, h), ..., (w-2, h), (w-1, h), (w, h)
+  public Coord gridPosition(Coord cellSize, int index) {
+    return cellSize.dualMultiply(new Coord(index%(int)mX, index/(int)mX));
+  }
+  
+  public float area() {
+    return mX*mY;
   }
   
   public Coord getCopy() {
@@ -84,5 +104,13 @@ public class Coord {
     //Maximum warp to minimum
     if (this.x() > BR.x()) this.mX = TL.x()+(this.x()-BR.x());
     if (this.y() > BR.y()) this.mY = TL.y()+(this.y()-BR.y());
+  }
+  
+  public String summary() {
+    String output = "";
+    
+    output += "(" + mX + ", " + mY + ")";
+    
+    return output;
   }
 };

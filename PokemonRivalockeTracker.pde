@@ -38,7 +38,9 @@ Label gymCreationWelcomeLabel;
 Button createPlayerButton;
 Button createTeamButton;
 Button createPokemonButton;
+Button setNameButton;
 Button setLevelButton;
+Button delButton;
 Button normalTypeButton;
 Button fightTypeButton;
 Button flyingTypeButton;
@@ -64,6 +66,8 @@ Button backButton;
 //Declare system variables
 String nameData;
 int    nameDataCharCount;
+String numberData;
+int    numberDataCharCount;
 String playerName;
 Team   playerTeam;
 String          pokemonName;
@@ -98,12 +102,12 @@ public void setup() {
   namingPage          = new Page("CREATE A NAME");
   
   //Intialize Tile variables
-  mainMenu            = new Menu(new Coord(width-100,  10), new Coord(      100,        310));
-  playerMenu          = new Menu(new Coord(       80,  80), new Coord(width-260, height-160));
-  gymMenu             = new Menu(new Coord(       80,  80), new Coord(width-260, height-160));
-  playerCreationMenu  = new Menu(new Coord(       80, 100), new Coord(width-260,        160));
-  teamCreationMenu    = new Menu(new Coord(       80,  20), new Coord(width-260,        360));
-  pokemonCreationMenu = new Menu(new Coord(       80,  40), new Coord(width-260,        310));
+  mainMenu            = new Menu(new Coord(width-110,  10), new Coord(       90, 40), 6);
+  playerMenu          = new Menu(new Coord(       80,  80), new Coord(width-280, 40), 5);
+  gymMenu             = new Menu(new Coord(       80,  80), new Coord(width-280, 40), 8);
+  playerCreationMenu  = new Menu(new Coord(       80, 100), new Coord(width-280, 40), 3);
+  teamCreationMenu    = new Menu(new Coord(       80,  20), new Coord(width-280, 40), 7);
+  pokemonCreationMenu = new Menu(new Coord(       80,  40), new Coord(width-280, 40), 6);
   spotlightWelcomeLabel   = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
   namingPageNameLabel     = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
   levelNumberLabel        = new Label(new Coord(20, 20), new Coord(350, 30), "LEVEL: ");
@@ -111,7 +115,9 @@ public void setup() {
   createPlayerButton  = new Button(new Coord( 90, 210), new Coord(width-280, 40), "CREATE PLAYER");
   createTeamButton    = new Button(new Coord (90, 330), new Coord(width-280, 40), "CREATE TEAM");
   createPokemonButton = new Button(new Coord( 90, 300), new Coord(width-280, 40), "CREATE POKEMON");
+  setNameButton       = new Button(new Coord( 90, 350), new Coord(width-280, 40), "SET NAME");
   setLevelButton      = new Button(new Coord( 90, 350), new Coord(width-280, 40), "SET LEVEL");
+  delButton           = new Button(new Coord(460, 140), new Coord( 50, 30), "DEL");
   normalTypeButton    = new Button(new Coord( 40,  40), new Coord( 70, 30), "NORMAL");
   fightTypeButton     = new Button(new Coord(120,  40), new Coord( 70, 30), "FIGHT" );
   flyingTypeButton    = new Button(new Coord(200,  40), new Coord( 70, 30), "FLYING");
@@ -184,40 +190,49 @@ public void setup() {
   levelNumberPage.addButton(new Button(new Coord( 40,  60), new Coord(30, 30), "7"));
   levelNumberPage.addButton(new Button(new Coord( 80,  60), new Coord(30, 30), "8"));
   levelNumberPage.addButton(new Button(new Coord(120,  60), new Coord(30, 30), "9"));
+  levelNumberPage.addButton(delButton);
   levelNumberPage.addButton(setLevelButton);
   levelNumberPage.addButton(backButton);
   gymCreationPage.addTile(gymCreationWelcomeLabel);
   gymCreationPage.addButton(backButton);
   namingPage.addTile(namingPageNameLabel);
+  /* 3RD GEN FORMAT
+   * ABC DEF  .
+   * GHI JKL  ,
+   * MNO PQRS 
+   * TUV WXYA 
+   */
   namingPage.addButton(new Button(new Coord( 20,  60), new Coord(30, 30), "A"));
   namingPage.addButton(new Button(new Coord( 60,  60), new Coord(30, 30), "B"));
   namingPage.addButton(new Button(new Coord(100,  60), new Coord(30, 30), "C"));
-  namingPage.addButton(new Button(new Coord(140,  60), new Coord(30, 30), "D"));
-  namingPage.addButton(new Button(new Coord( 20, 100), new Coord(30, 30), "E"));
-  namingPage.addButton(new Button(new Coord( 60, 100), new Coord(30, 30), "F"));
-  namingPage.addButton(new Button(new Coord(100, 100), new Coord(30, 30), "G"));
-  namingPage.addButton(new Button(new Coord(140, 100), new Coord(30, 30), "H"));
-  namingPage.addButton(new Button(new Coord( 20, 140), new Coord(30, 30), "I"));
-  namingPage.addButton(new Button(new Coord( 60, 140), new Coord(30, 30), "J"));
-  namingPage.addButton(new Button(new Coord(100, 140), new Coord(30, 30), "K"));
-  namingPage.addButton(new Button(new Coord(140, 140), new Coord(30, 30), "L"));
-  namingPage.addButton(new Button(new Coord( 20, 180), new Coord(30, 30), "M"));
-  namingPage.addButton(new Button(new Coord( 60, 180), new Coord(30, 30), "N"));
-  namingPage.addButton(new Button(new Coord(100, 180), new Coord(30, 30), "O"));
-  namingPage.addButton(new Button(new Coord(140, 180), new Coord(30, 30), "P"));
-  namingPage.addButton(new Button(new Coord( 20, 220), new Coord(30, 30), "Q"));
-  namingPage.addButton(new Button(new Coord( 60, 220), new Coord(30, 30), "R"));
-  namingPage.addButton(new Button(new Coord(100, 220), new Coord(30, 30), "S"));
-  namingPage.addButton(new Button(new Coord(140, 220), new Coord(30, 30), "T"));
-  namingPage.addButton(new Button(new Coord( 20, 260), new Coord(30, 30), "U"));
-  namingPage.addButton(new Button(new Coord( 60, 260), new Coord(30, 30), "V"));
-  namingPage.addButton(new Button(new Coord(100, 260), new Coord(30, 30), "W"));
-  namingPage.addButton(new Button(new Coord(140, 260), new Coord(30, 30), "X"));
-  namingPage.addButton(new Button(new Coord( 20, 300), new Coord(30, 30), "Y"));
-  namingPage.addButton(new Button(new Coord( 60, 300), new Coord(30, 30), "Z"));
-  namingPage.addButton(new Button(new Coord(100, 300), new Coord(40, 30), "DEL"));
-  namingPage.addButton(new Button(new Coord(150, 300), new Coord(50, 30), "DONE"));
-  namingPage.addButton(new Button(new Coord( 20, 340), new Coord(60, 30), "SPACE"));
+  namingPage.addButton(new Button(new Coord(180,  60), new Coord(30, 30), "D"));
+  namingPage.addButton(new Button(new Coord(220,  60), new Coord(30, 30), "E"));
+  namingPage.addButton(new Button(new Coord(260,  60), new Coord(30, 30), "F"));
+  namingPage.addButton(new Button(new Coord(380,  60), new Coord(30, 30), "."));
+  namingPage.addButton(new Button(new Coord( 20, 100), new Coord(30, 30), "G"));
+  namingPage.addButton(new Button(new Coord( 60, 100), new Coord(30, 30), "H"));
+  namingPage.addButton(new Button(new Coord(100, 100), new Coord(30, 30), "I"));
+  namingPage.addButton(new Button(new Coord(180, 100), new Coord(30, 30), "J"));
+  namingPage.addButton(new Button(new Coord(220, 100), new Coord(30, 30), "K"));
+  namingPage.addButton(new Button(new Coord(260, 100), new Coord(30, 30), "L"));
+  namingPage.addButton(new Button(new Coord(380, 100), new Coord(30, 30), ","));
+  namingPage.addButton(new Button(new Coord( 20, 140), new Coord(30, 30), "M"));
+  namingPage.addButton(new Button(new Coord( 60, 140), new Coord(30, 30), "N"));
+  namingPage.addButton(new Button(new Coord(100, 140), new Coord(30, 30), "O"));
+  namingPage.addButton(new Button(new Coord(180, 140), new Coord(30, 30), "P"));
+  namingPage.addButton(new Button(new Coord(220, 140), new Coord(30, 30), "Q"));
+  namingPage.addButton(new Button(new Coord(260, 140), new Coord(30, 30), "R"));
+  namingPage.addButton(new Button(new Coord(300, 140), new Coord(30, 30), "S"));
+  namingPage.addButton(new Button(new Coord(380, 140), new Coord(30, 30), " "));
+  namingPage.addButton(new Button(new Coord( 20, 180), new Coord(30, 30), "T"));
+  namingPage.addButton(new Button(new Coord( 60, 180), new Coord(30, 30), "U"));
+  namingPage.addButton(new Button(new Coord(100, 180), new Coord(30, 30), "V"));
+  namingPage.addButton(new Button(new Coord(180, 180), new Coord(30, 30), "W"));
+  namingPage.addButton(new Button(new Coord(220, 180), new Coord(30, 30), "X"));
+  namingPage.addButton(new Button(new Coord(260, 180), new Coord(30, 30), "Y"));
+  namingPage.addButton(new Button(new Coord(300, 180), new Coord(30, 30), "Z"));
+  namingPage.addButton(delButton);
+  namingPage.addButton(setNameButton);
   namingPage.addButton(backButton);
   
   //Populate menus
@@ -237,6 +252,7 @@ public void setup() {
   
   //Initialize system variables
   resetNameData();
+  resetNumberData();
   resetPokemonData();
   pageHistory = new Collection<Page>();
   currentPage = spotlightPage;
@@ -353,6 +369,8 @@ public void mouseClicked() {
       teamCreationMenu.addPage(creationPage);
       //Reset nameData
       resetNameData();
+      //Reset numberData
+      resetNumberData();
       //Reset pokemon data
       resetPokemonData();
       //Go back to previous page
@@ -412,13 +430,37 @@ public void mouseClicked() {
   
   //Level Number Page Buttons
   if (currentPage == levelNumberPage) {
-    //For now, when SET LEVEL button is clicked, go back to last page
-    if (setLevelButton.click(new Coord(mouseX, mouseY))) {
-      //Go back to previous page
-      currentPage = pageHistory.removeTail();
-      //Don't process any more mouse actions this frame
-      return;
+    for (int b=0; currentPage.getButton(b) != null; b++) {
+      currentButton = currentPage.getButton(b);
+      if (currentButton.click(new Coord(mouseX, mouseY))) {
+        //DEL Button
+        if (currentButton == delButton) {
+          //If there is at least one character in nameData
+          if (numberDataCharCount > 0) {
+            //Remove last character by using String.substring()
+            numberDataCharCount--;
+            numberData = numberData.substring(0, numberDataCharCount);
+          }
+        }
+        //SET LEVEL Button
+        else if (currentButton == setLevelButton) {
+          //Process numberData String into corresponding int and store it
+          if (numberData != "") pokemonLevel = int(numberData);
+          else pokemonLevel = 1;
+          //Go back to last page
+          currentPage = pageHistory.removeTail();
+          //Don't process any more mouse actions this frame
+          return;
+        }
+        //If any other non-menu button clicked, add its text to nameData
+        else {
+          numberDataCharCount++;
+          numberData += currentButton.getText();
+        }
+      }
     }
+    //Update namingPageNameLabel to reflect current nameData value
+    levelNumberLabel.setText("LEVEL: " + numberData);
   }
   
   //Naming Page Buttons
@@ -426,8 +468,8 @@ public void mouseClicked() {
     for (int b=0; currentPage.getButton(b) != null; b++) {
       currentButton = currentPage.getButton(b);
       if (currentButton.click(new Coord(mouseX, mouseY))) {
-        //If DEL button clicked
-        if (currentButton.getText() == "DEL") {
+        //DEL Button
+        if (currentButton == delButton) {
           //If there is at least one character in nameData
           if (nameDataCharCount > 0) {
             //Remove last character by using String.substring()
@@ -435,14 +477,8 @@ public void mouseClicked() {
             nameData = nameData.substring(0, nameDataCharCount);
           }
         }
-        //If SPACE button clicked
-        else if (currentButton.getText() == "SPACE") {
-          //Manually add space character
-          nameDataCharCount++;
-          nameData += " ";
-        }
-        //If DONE button clicked
-        else if (currentButton.getText() == "DONE") {
+        //SET NAME Button
+        else if (currentButton == setNameButton) {
           
           //If we entered namingPage from playerCreationPage, nameData will be the new Player's name
           if (pageHistory.getTail() == playerCreationPage) {
@@ -496,6 +532,14 @@ private void resetNameData() {
   nameDataCharCount = 0;
   //Update namingPageNameLabel
   namingPageNameLabel.setText("NAME: " + nameData);
+}
+
+private void resetNumberData() {
+  //Reset numberData
+  numberData = "";
+  numberDataCharCount = 0;
+  //Update levelNumberLabel
+  levelNumberLabel.setText("LEVEL: " + numberData);
 }
 
 private void resetPokemonData() {
