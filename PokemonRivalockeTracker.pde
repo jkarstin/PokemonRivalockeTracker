@@ -33,6 +33,7 @@ Menu teamCreationMenu;
 Menu pokemonCreationMenu;
 Label spotlightWelcomeLabel;
 Label namingPageNameLabel;
+Label breedNameLabel;
 Label levelNumberLabel;
 Label gymCreationWelcomeLabel;
 Keypad namingKeypad;
@@ -43,6 +44,7 @@ Button createPlayerButton;
 Button createTeamButton;
 Button createPokemonButton;
 Button setNameButton;
+Button setBreedButton;
 Button setLevelButton;
 Button delButton;
 Button backButton;
@@ -50,12 +52,15 @@ Button backButton;
 //Declare system variables
 String nameData;
 int    nameDataCharCount;
+String breedData;
+int    breedDataCharCount;
 String numberData;
 int    numberDataCharCount;
 String playerName;
 Team   playerTeam;
 String          pokemonName;
-PokeData.Breed  pokemonBreed;
+//PokeData.Breed  pokemonBreed;
+String          pokemonBreed;
 PokeData.Type   pokemonType;
 PokeData.Gender pokemonGender;
 int             pokemonLevel;
@@ -94,6 +99,7 @@ public void setup() {
   pokemonCreationMenu = new Menu(new Coord(       80,  40), new Coord(width-280, 40), 6);
   spotlightWelcomeLabel   = new Label(new Coord(20, 20), new Coord(350, 30), "Welcome to the SPOTLIGHT Page!");
   namingPageNameLabel     = new Label(new Coord(20, 20), new Coord(350, 30), "NAME: ");
+  breedNameLabel          = new Label(new Coord(20, 20), new Coord(350, 30), "BREED: ");
   levelNumberLabel        = new Label(new Coord(20, 20), new Coord(350, 30), "LEVEL: ");
   gymCreationWelcomeLabel = new Label(new Coord(20, 20), new Coord(350, 30), "Future GYM CREATION Page, coming soon!");
   namingKeypad = new Keypad(new Coord( 80, 100), new Coord(10, 4));
@@ -104,6 +110,7 @@ public void setup() {
   createTeamButton    = new Button(new Coord (90, 330), new Coord(width-280, 40), "CREATE TEAM");
   createPokemonButton = new Button(new Coord( 90, 300), new Coord(width-280, 40), "CREATE POKEMON");
   setNameButton       = new Button(new Coord( 90, 350), new Coord(width-280, 40), "SET NAME");
+  setBreedButton      = new Button(new Coord( 90, 350), new Coord(width-280, 40), "SET BREED");
   setLevelButton      = new Button(new Coord( 90, 350), new Coord(width-280, 40), "SET LEVEL");
   delButton           = new Button(new Coord(500, 140), new Coord( 50, 30), "DEL");
   backButton          = new Button(new Coord(width-70, height-50), new Coord(50, 30), "BACK");
@@ -154,7 +161,7 @@ public void setup() {
   numberKeypad.addButton("1");
   numberKeypad.addButton("2");
   numberKeypad.addButton("3");
-  numberKeypad.addButton("0");
+  numberKeypad.addButton("0", new Coord(1, 3));
   typeKeypad.addButton("NORMAL");
   typeKeypad.addButton("FIGHT" );
   typeKeypad.addButton("FLYING");
@@ -171,8 +178,8 @@ public void setup() {
   typeKeypad.addButton("PSYCHC");
   typeKeypad.addButton("ICE"   );
   typeKeypad.addButton("DRAGON");
-  typeKeypad.addButton("DARK"  );
-  typeKeypad.addButton("FAIRY" );
+  typeKeypad.addButton("DARK"  , new Coord(1, 4));
+  typeKeypad.addButton("FAIRY" , new Coord(2, 4));
   genderKeypad.addButton("FEMALE");
   genderKeypad.addButton("MALE"  );
   
@@ -192,6 +199,10 @@ public void setup() {
   pokemonCreationPage.addMenu(pokemonCreationMenu);
   pokemonCreationPage.addButton(createPokemonButton);
   pokemonCreationPage.addButton(backButton);
+  breedSelectionPage.addTile(breedNameLabel);
+  breedSelectionPage.addKeypad(namingKeypad);
+  breedSelectionPage.addButton(delButton);
+  breedSelectionPage.addButton(setBreedButton);
   breedSelectionPage.addButton(backButton);
   typeSelectionPage.addKeypad(typeKeypad);
   typeSelectionPage.addButton(backButton);
@@ -227,6 +238,7 @@ public void setup() {
   
   //Initialize system variables
   resetNameData();
+  resetBreedData();
   resetNumberData();
   resetPokemonData();
   pageHistory = new Collection<Page>();
@@ -359,6 +371,46 @@ public void mouseClicked() {
     }
   }
   
+  //Breed Selection Page Buttons
+  if (currentPage == breedSelectionPage) {
+    //DEL Button
+    if (delButton.click(new Coord(mouseX, mouseY))) {
+      //If there is at least one character in breedData
+      if (breedDataCharCount > 0) {
+        //Remove last character by using String.substring()
+        breedDataCharCount--;
+        breedData = breedData.substring(0, breedDataCharCount);
+        //Update breedNameLabel to reflect current breedData value
+        breedNameLabel.setText("BREED: " + breedData);
+        //Don't process any more mouse actions this frame
+        return;
+      }
+    }
+    //SET BREED Button
+    else if (setBreedButton.click(new Coord(mouseX, mouseY))) {
+      pokemonBreed = breedData;
+      //Reset breedData
+      resetBreedData();
+      //Go back to previous page
+      currentPage = pageHistory.removeTail();
+      //Don't process any more mouse actions this frame
+      return;
+    }
+    //Keypad Buttons
+    for (int b=0; namingKeypad.getButton(b) != null; b++) {
+      currentButton = namingKeypad.getButton(b);
+      //If any keypad button is clicked in namingKeypad, add its text value to nameData
+      if (currentButton.click(new Coord(mouseX, mouseY))) {
+        breedDataCharCount++;
+        breedData += currentButton.getText();
+        //Update breedNameLabel to reflect current breedData value
+        breedNameLabel.setText("BREED: " + breedData);
+        //Don't process any more mouse actions this frame
+        return;
+      }
+    }
+  }
+  
   //Pokemon Type Selection Page Buttons
   if (currentPage == typeSelectionPage) {
     //Check every Type button
@@ -439,7 +491,6 @@ public void mouseClicked() {
       if (currentButton.click(new Coord(mouseX, mouseY))) {
         numberDataCharCount++;
         numberData += currentButton.getText();
-        println(currentButton.getText());
         //Update levelNumberLabel to reflect current numberData value
         levelNumberLabel.setText("LEVEL: " + numberData);
         //Don't process any more mouse actions this frame
@@ -518,6 +569,14 @@ private void resetNameData() {
   namingPageNameLabel.setText("NAME: " + nameData);
 }
 
+private void resetBreedData() {
+  //Reset breedData
+  breedData = "";
+  breedDataCharCount = 0;
+  //Update breedNameLabel
+  breedNameLabel.setText("BREED: " + breedData);
+}
+
 private void resetNumberData() {
   //Reset numberData
   numberData = "";
@@ -528,7 +587,7 @@ private void resetNumberData() {
 
 private void resetPokemonData() {
   pokemonName   = "";
-  pokemonBreed  = PokeData.Breed.NONE;
+  pokemonBreed  = ""; //PokeData.Breed.NONE;
   pokemonType   = PokeData.Type.NORMAL;
   pokemonGender = PokeData.Gender.FEMALE;
   pokemonLevel  = 1;
